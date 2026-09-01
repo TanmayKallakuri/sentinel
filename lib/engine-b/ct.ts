@@ -2,12 +2,27 @@ import { MAX_CT_SUBDOMAINS_SHOWN, userAgent } from "@/lib/config";
 import type { SandboxRunner } from "@/lib/solari/sandbox";
 import type { CtResult } from "@/lib/types";
 
-/** One request to a public Certificate Transparency log mirror. */
+/**
+ * One public Certificate Transparency log mirror, retried with backoff. crt.sh
+ * answers 502 often enough that a single attempt reports a healthy vendor as
+ * unassessed, which is a worse error than waiting. Three attempts at ten
+ * seconds with two and four second backoffs stay inside the per check timeout.
+ * A retry is not a second source: falling back to another log aggregator would
+ * change what the finding means, so a failure stays a failure.
+ */
 export const CT_SCRIPT = `
 set -u
 D="$1"
 UA="$2"
-curl -sS --max-time 30 -A "$UA" "https://crt.sh/?q=%25.$D&output=json" || true
+BODY=""
+for delay in 0 2 4; do
+  if [ "$delay" -gt 0 ]; then sleep "$delay"; fi
+  BODY=$(curl -sS --max-time 10 -A "$UA" "https://crt.sh/?q=%25.$D&output=json" 2>/dev/null || true)
+  case "$BODY" in
+    '['*) printf '%s' "$BODY"; exit 0 ;;
+  esac
+done
+printf '%s' "$BODY"
 `;
 
 function unavailable(error: string): CtResult {
