@@ -1,10 +1,10 @@
 // Evaluates the cookbook example's validator against every line of the shared
 // input file inside a single process, and prints one JSON verdict array.
 //
-// The example is a CLI with no exports, so each input is evaluated by importing
-// it again under a cache busting query, which re-runs its top level body with a
-// fresh process.argv. That keeps the deliverable untouched: it stays a plain
-// runnable script with nothing added for the sake of being tested.
+// The example exports parseDomainArgument and runs its CLI body only under an
+// import.meta.main guard, so importing it here is a pure module load: no browser
+// session, no sandbox, no network. That guard and that one export are the only
+// concessions the deliverable makes to being tested.
 //
 // Usage: tsx differential-driver.mts <fork-index.ts> <inputs.txt>
 import { readFileSync } from "node:fs";
@@ -19,32 +19,17 @@ const inputs = readFileSync(inputsFile, "utf8")
   .split(/\r?\n/)
   .filter((line) => line.length > 0 && !line.startsWith("#"));
 
-const base = pathToFileURL(forkIndex).href;
-const realLog = console.log;
-let captured = "";
-const capture = (...parts: unknown[]) => {
-  captured += parts.map(String).join(" ") + "\n";
+const example = (await import(pathToFileURL(forkIndex).href)) as {
+  parseDomainArgument: (raw: string | undefined) => string;
 };
 
-const verdicts: { input: string; verdict: string }[] = [];
-for (const input of inputs) {
-  captured = "";
-  process.argv[2] = input;
-  console.log = capture;
-  console.error = capture;
+const verdicts = inputs.map((input) => {
   try {
-    await import(`${base}?differential=${encodeURIComponent(input)}`);
+    return { input, verdict: `accept ${example.parseDomainArgument(input)}` };
   } catch {
     // A thrown refusal is the example's reject path, not a driver failure.
+    return { input, verdict: "reject" };
   }
-  console.log = realLog;
-  const domain = /"domain":\s*"([^"]*)"/.exec(captured)?.[1];
-  verdicts.push({ input, verdict: domain ? `accept ${domain}` : "reject" });
-}
+});
 
-realLog(JSON.stringify(verdicts));
-
-// The example sets process.exitCode = 1 on every refusal, and importing it in
-// process means that lands on this driver. Refusals are expected results here,
-// not driver failures, so the exit code is cleared after the verdicts are out.
-process.exitCode = 0;
+console.log(JSON.stringify(verdicts));
