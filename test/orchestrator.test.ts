@@ -57,6 +57,35 @@ describe("assembleReport", () => {
     expect(report.notes.some((note) => note.toLowerCase().includes("not assessed"))).toBe(true);
   });
 
+  it("states how many of the 100 points were assessable", () => {
+    expect(report.assessedPoints).toBe(0);
+    expect(report.overallScore).toBe(0);
+    expect(report.grade).toBe("F");
+    expect(report.notes.join(" ")).toContain("assessed on 0 of 100 points");
+  });
+
+  it("sums assessedPoints over the checks that ran and scores against that total", () => {
+    const partial = assembleReport({
+      domain: "acme.com",
+      scanId: "scan-3",
+      startedAt: Date.now(),
+      a: EMPTY_A,
+      b: {
+        ...MINIMAL_B,
+        dns: {
+          status: "info",
+          caa: { present: true, records: ['0 issue "letsencrypt.org"'] },
+          dnssec: { present: false, dsRecords: 0, authenticatedData: false },
+        },
+      },
+      timings: [],
+    });
+    expect(partial.assessedPoints).toBe(10);
+    expect(partial.overallScore).toBe(50);
+    expect(partial.notes.join(" ")).toContain("assessed on 10 of 100 points");
+    expect(partial.notes.join(" ")).toContain("excluded from both the earned and the available side");
+  });
+
   it("still produces a grade when an engine returned nothing", () => {
     const noEngines = assembleReport({
       domain: "acme.com",

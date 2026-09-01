@@ -46,6 +46,7 @@ export interface CategoryScore {
   pointsAvailable: number;
   /** Points belonging to checks that could not be run. Excluded from the ratio. */
   pointsNotAssessed: number;
+  /** Absolute points earned, never scaled up to the category weight. */
   score: number;
   findings: Finding[];
 }
@@ -194,6 +195,8 @@ export interface Report {
   domain: string;
   scannedAt: string;
   overallScore: number;
+  /** Points that could be assessed, out of 100. The denominator of overallScore. */
+  assessedPoints: number;
   grade: Grade;
   categories: CategoryScore[];
   screenshots: Screenshot[];

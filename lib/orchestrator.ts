@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { normalizeDomain } from "@/lib/domain";
 import { runEngineA } from "@/lib/engine-a";
 import { runEngineB } from "@/lib/engine-b";
-import { buildCategories, overallScore } from "@/lib/scoring/evaluate";
+import { assessedPoints, buildCategories, overallScore } from "@/lib/scoring/evaluate";
 import { gradeFor } from "@/lib/scoring/scoring";
 import type { EngineAResult, EngineBResult, EngineTiming, Report } from "@/lib/types";
 
@@ -42,13 +42,17 @@ export function assembleReport(input: AssembleInput): Report {
   const b = input.b ?? EMPTY_B;
   const categories = buildCategories(a, b);
   const score = overallScore(categories);
+  const assessed = assessedPoints(categories);
 
   const notes: string[] = [];
   if (!input.a) notes.push("Engine A did not complete, so no governance signals were collected.");
   if (!input.b) notes.push("Engine B did not complete, so no technical checks were run.");
+  if (assessed < 100) {
+    notes.push(`This report was assessed on ${assessed} of 100 points. Checks that could not be run are excluded from both the earned and the available side of the score.`);
+  }
   for (const category of categories) {
     if (category.pointsNotAssessed > 0) {
-      notes.push(`${category.label} was not assessed, so its ${category.weight} weighted points were excluded from the score.`);
+      notes.push(`${category.label}: ${category.pointsNotAssessed} of its ${category.weight} points were not assessed and are excluded from the score.`);
     }
   }
   if (a.signals.length > 0) {
@@ -61,6 +65,7 @@ export function assembleReport(input: AssembleInput): Report {
     domain: input.domain,
     scannedAt: new Date().toISOString(),
     overallScore: Math.round(score * 10) / 10,
+    assessedPoints: assessed,
     grade: gradeFor(score),
     categories,
     screenshots: a.screenshots,

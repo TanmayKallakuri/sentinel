@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { buildCategories, overallScore } from "@/lib/scoring/evaluate";
+import { assessedPoints, buildCategories, overallScore } from "@/lib/scoring/evaluate";
 import { gradeFor, WEIGHTS, SIGNAL_POINTS } from "@/lib/scoring/scoring";
 import { SIGNALS } from "@/lib/engine-a/signals";
 import type { EngineAResult, EngineBResult, PageVisit } from "@/lib/types";
@@ -76,7 +76,10 @@ describe("gradeFor", () => {
 
 describe("buildCategories", () => {
   it("awards a perfect posture 100", () => {
-    expect(Math.round(overallScore(buildCategories(PERFECT_A, PERFECT_B)))).toBe(100);
+    const categories = buildCategories(PERFECT_A, PERFECT_B);
+    const earned = categories.reduce((sum, c) => sum + c.pointsEarned, 0);
+    expect(earned).toBe(assessedPoints(categories));
+    expect(Math.round(overallScore(categories))).toBe(100);
   });
 
   it("uses the declared weights", () => {
@@ -126,9 +129,75 @@ describe("buildCategories", () => {
     expect(dns?.pointsAvailable).toBe(0);
     expect(dns?.pointsNotAssessed).toBe(WEIGHTS.dns);
     expect(dns?.score).toBe(0);
-    // The overall score renormalises over the categories that were assessed,
-    // so a resolver outage does not silently downgrade the vendor.
+    // The 10 unassessed points leave both sides of the ratio, so a resolver
+    // outage does not silently downgrade the vendor.
+    expect(assessedPoints(categories)).toBe(80);
     expect(Math.round(overallScore(categories))).toBe(100);
+  });
+
+  it("counts partly assessed points against the category weight, not the whole weight", () => {
+    const cve = buildCategories(PERFECT_A, PERFECT_B).find((c) => c.id === "cve");
+    expect(cve?.pointsAvailable).toBe(5);
+    expect(cve?.pointsNotAssessed).toBe(WEIGHTS.cve - 5);
+  });
+
+  it("scores absolute points rather than scaling a category up to its weight", () => {
+    const categories = buildCategories(PERFECT_A, PERFECT_B);
+    for (const category of categories) {
+      expect(category.score).toBe(category.pointsEarned);
+    }
+    // The github.com shape: nothing to look up leaves the CVE category at its
+    // 5 hygiene points, not at the full 15 weight.
+    const cve = categories.find((c) => c.id === "cve");
+    expect(cve?.pointsEarned).toBe(5);
+    expect(cve?.score).toBe(5);
+    expect(assessedPoints(categories)).toBe(90);
+    expect(overallScore(categories)).toBe(100);
+  });
+
+  it("assesses all 100 points when a version is disclosed and the lookup runs", () => {
+    const disclosed: EngineBResult = {
+      ...PERFECT_B,
+      tech: {
+        status: "info",
+        versionDisclosed: true,
+        software: [{
+          product: "nginx", version: "1.27.4", source: "server header",
+          cpe: "cpe:2.3:a:nginx:nginx:1.27.4", cveLookup: "performed", cves: [],
+        }],
+      },
+    };
+    const categories = buildCategories(PERFECT_A, disclosed);
+    const cve = categories.find((c) => c.id === "cve");
+    expect(cve?.pointsAvailable).toBe(WEIGHTS.cve);
+    expect(cve?.pointsNotAssessed).toBe(0);
+    expect(cve?.pointsEarned).toBe(10);
+    expect(assessedPoints(categories)).toBe(100);
+    expect(overallScore(categories)).toBe(95);
+  });
+
+  it("scores zero and grades F when nothing at all could be assessed", () => {
+    const nothing: EngineBResult = {
+      tls: { status: "unavailable", legacyProtocolsTestable: false },
+      headers: { status: "unavailable", headers: {} },
+      email: {
+        status: "unavailable",
+        spf: { present: false },
+        dmarc: { present: false },
+        dkim: { selectorsTried: [], found: [] },
+      },
+      dns: {
+        status: "unavailable",
+        caa: { present: false, records: [] },
+        dnssec: { present: false, dsRecords: 0, authenticatedData: false },
+      },
+      ct: { status: "unavailable", source: "crt.sh", total: 0, sample: [] },
+      tech: { status: "unavailable", software: [], versionDisclosed: false },
+    };
+    const categories = buildCategories({ ...PERFECT_A, signals: [] }, nothing);
+    expect(assessedPoints(categories)).toBe(0);
+    expect(overallScore(categories)).toBe(0);
+    expect(gradeFor(overallScore(categories))).toBe("F");
   });
 
   it("never claims a target is vulnerable in finding text", () => {

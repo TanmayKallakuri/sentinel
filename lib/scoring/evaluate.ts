@@ -36,8 +36,8 @@ function toCategory(id: CategoryId, findings: Finding[]): CategoryScore {
     weight,
     pointsEarned,
     pointsAvailable,
-    pointsNotAssessed: pointsAvailable === 0 ? weight : 0,
-    score: pointsAvailable === 0 ? 0 : (pointsEarned / pointsAvailable) * weight,
+    pointsNotAssessed: weight - pointsAvailable,
+    score: pointsEarned,
     findings,
   };
 }
@@ -210,9 +210,11 @@ function cve(b: EngineBResult): CategoryScore {
           : "No associated public CVE at or above CVSS 7.0 was found for the observed versions."),
     );
   } else {
+    // Same two ids at zero points, so a target with nothing to look up neither gains nor loses them.
+    const noLookup = "No observed software carried both a version and a known CPE mapping, so no associated public CVE lookup was possible.";
     findings.push(
-      finding("cve.lookup", "Associated public CVE lookup", 0, 0,
-        "No observed software carried both a version and a known CPE mapping, so no associated public CVE lookup was performed."),
+      finding("cve.critical", "No associated public CVE at CVSS 9.0 or above", 0, 0, noLookup),
+      finding("cve.high", "No associated public CVE at CVSS 7.0 or above", 0, 0, noLookup),
     );
   }
 
@@ -224,13 +226,18 @@ export function buildCategories(a: EngineAResult, b: EngineBResult): CategorySco
 }
 
 /**
- * Categories that could not be assessed are removed from the denominator, so a
- * scanner side outage never presents as a worse vendor posture.
+ * Total earned over total available, in absolute points. A check that could not
+ * be run leaves both sides of the ratio, so a scanner side outage never presents
+ * as a worse vendor posture, and no category is ever scaled up to its weight on
+ * the strength of the few points that happened to be assessable.
  */
 export function overallScore(categories: CategoryScore[]): number {
-  const assessed = categories.filter((category) => category.pointsAvailable > 0);
-  const weightAssessed = assessed.reduce((sum, category) => sum + category.weight, 0);
-  if (weightAssessed === 0) return 0;
-  const earned = assessed.reduce((sum, category) => sum + category.score, 0);
-  return (earned / weightAssessed) * 100;
+  const earned = categories.reduce((sum, category) => sum + category.pointsEarned, 0);
+  const available = categories.reduce((sum, category) => sum + category.pointsAvailable, 0);
+  if (available === 0) return 0;
+  return (earned / available) * 100;
+}
+
+export function assessedPoints(categories: CategoryScore[]): number {
+  return categories.reduce((sum, category) => sum + category.pointsAvailable, 0);
 }
