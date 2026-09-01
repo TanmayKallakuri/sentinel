@@ -107,3 +107,30 @@ describe("detectSignals guards against the false positives that would inflate a 
     expect(found([{ url: "x", text: "The ASOC2000 sensor array." }])).toEqual([]);
   });
 });
+
+describe("detectSignals treats a page's own address as evidence", () => {
+  // A live scan loaded https://status.vercel.com/ successfully and still
+  // reported no status page: innerText reads "Vercel Status" and never contains
+  // the address. Loading the page is the evidence, so the URL is searched too.
+  it("finds a status page from the address when the text does not say so", () => {
+    const results = detectSignals([
+      { url: "https://status.vercel.com/", text: "Vercel Status All Systems Operational" },
+    ]);
+    const status = results.find((r) => r.id === "status_page");
+    expect(status?.found).toBe(true);
+    expect(status?.evidence?.url).toBe("https://status.vercel.com/");
+  });
+
+  it("finds a security contact from a security.txt address", () => {
+    const results = detectSignals([
+      { url: "https://acme.com/.well-known/security.txt", text: "Contact: mailto:security@acme.com" },
+    ]);
+    expect(results.find((r) => r.id === "vuln_disclosure")?.found).toBe(true);
+    expect(results.find((r) => r.id === "security_contact")?.found).toBe(true);
+  });
+
+  it("does not let an ordinary page address invent signals", () => {
+    const results = detectSignals([{ url: "https://acme.com/pricing", text: "Plans and pricing." }]);
+    expect(results.every((r) => !r.found)).toBe(true);
+  });
+});

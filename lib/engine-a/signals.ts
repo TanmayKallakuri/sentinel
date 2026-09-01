@@ -86,8 +86,14 @@ export function detectSignals(
 ): GovernanceSignalResult[] {
   return SIGNALS.map((signal) => {
     for (const page of pages) {
+      // The URL is searched alongside the text because a page's own address is
+      // evidence that text alone does not carry. A live scan loaded
+      // status.vercel.com successfully and still reported no status page,
+      // because innerText reads "Vercel Status" and the address bar is not part
+      // of the document. The same applies to /.well-known/security.txt.
+      const haystack = `${page.url}\n${page.text}`;
       for (const pattern of signal.patterns) {
-        const match = pattern.exec(page.text);
+        const match = pattern.exec(haystack);
         if (!match) continue;
         return {
           id: signal.id,
@@ -95,7 +101,7 @@ export function detectSignals(
           found: true,
           evidence: {
             url: page.url,
-            excerpt: excerptAround(page.text, match.index, match[0].length),
+            excerpt: excerptAround(haystack, match.index, match[0].length),
           },
         };
       }

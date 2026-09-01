@@ -2,8 +2,13 @@
 // timeouts without reading the engines.
 export const MAX_TRUST_PAGES = 12;
 export const MAX_LINK_FOLLOW = 2;
-export const PAGE_TIMEOUT_MS = 20_000;
-export const BROWSER_TOTAL_TIMEOUT_MS = 180_000;
+// These three have to agree. Engine A visits at most MAX_TRUST_PAGES pages,
+// each costing up to PAGE_TIMEOUT_MS plus a one second throttle, so the worst
+// case is 12 * 16s = 192s and the total budget has to exceed it. It previously
+// did not: a 20s page timeout against a 180s budget meant a slow vendor aborted
+// the whole engine mid scan, which a fast vendor never revealed.
+export const PAGE_TIMEOUT_MS = 15_000;
+export const BROWSER_TOTAL_TIMEOUT_MS = 240_000;
 export const SANDBOX_CPU = 2;
 export const SANDBOX_MEM_MB = 4096;
 export const SANDBOX_TIMEOUT_MS = 600_000;
