@@ -248,3 +248,11 @@ button {
   color: var(--muted);
   cursor: not-allowed;
 }
+
+.scope-line {
+  margin: 0 0 12px;
+  padding-left: 12px;
+  border-left: 3px solid var(--rule);
+  color: var(--muted);
+  font-size: 14px;
+}

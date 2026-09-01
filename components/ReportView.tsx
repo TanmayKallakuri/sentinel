@@ -4,6 +4,14 @@ import { STATUS_LABEL, STATUS_TITLE } from "./FindingRow";
 import { ScoreHeader } from "./ScoreHeader";
 import { ScreenshotGallery } from "./ScreenshotGallery";
 
+/**
+ * The standing caveat every report carries. It is rendered unconditionally
+ * above the score rather than added to notes, because a reader has to know the
+ * boundary of the scan before reading a number derived from it.
+ */
+export const SCOPE_LINE =
+  "This score reflects publicly observable, self-hosted posture only. Off-site and authenticated content is not assessed.";
+
 const LOOKUP_NOTE: Record<ObservedSoftware["cveLookup"], string> = {
   performed: "Associated public CVEs were looked up for this version.",
   skipped_no_cpe: "No known CPE mapping, so no CVE lookup was performed.",
@@ -50,6 +58,7 @@ export function ReportView({ report }: { report: Report }) {
 
   return (
     <article>
+      <p className="scope-line">{SCOPE_LINE}</p>
       <ScoreHeader report={report} />
       <hr className="rule" />
       <p className="muted">

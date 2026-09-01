@@ -1,13 +1,31 @@
 import { describe, it, expect } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { ReportView } from "@/components/ReportView";
+import { ReportView, SCOPE_LINE } from "@/components/ReportView";
 import { LONG_CSP, fixtureReport as report } from "./fixtures/report";
 import type { Report } from "@/lib/types";
 
 const html = renderToStaticMarkup(createElement(ReportView, { report }));
 
 describe("ReportView", () => {
+  it("carries the fixed scope line once, above the score, on every report", () => {
+    expect(SCOPE_LINE).toBe(
+      "This score reflects publicly observable, self-hosted posture only. Off-site and authenticated content is not assessed.",
+    );
+    expect(html.split(SCOPE_LINE)).toHaveLength(2);
+    expect(html.indexOf(SCOPE_LINE)).toBeLessThan(html.indexOf("71.1 out of 100"));
+
+    // A report stripped of every optional part still carries it.
+    const bare: Report = {
+      ...report,
+      categories: [],
+      screenshots: [],
+      observedSoftware: [],
+      notes: [],
+    };
+    expect(renderToStaticMarkup(createElement(ReportView, { report: bare }))).toContain(SCOPE_LINE);
+  });
+
   it("states the score, the grade, and the assessed denominator", () => {
     expect(html).toContain("71.1 out of 100, assessed on 90 of 100 points.");
     expect(html).toContain(">C</div>");
