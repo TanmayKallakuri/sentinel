@@ -151,7 +151,8 @@ export interface DnsResult {
 
 export interface CtResult {
   status: CheckStatus;
-  source: "crt.sh";
+  /** The log source that answered. Cert Spotter is tried only if crt.sh does not. */
+  source: "crt.sh" | "certspotter";
   total: number;
   sample: string[];
   error?: string;

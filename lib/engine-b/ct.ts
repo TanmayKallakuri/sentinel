@@ -3,12 +3,13 @@ import type { SandboxRunner } from "@/lib/solari/sandbox";
 import type { CtResult } from "@/lib/types";
 
 /**
- * One public Certificate Transparency log mirror, retried with backoff. crt.sh
- * answers 502 often enough that a single attempt reports a healthy vendor as
- * unassessed, which is a worse error than waiting. Three attempts at ten
- * seconds with two and four second backoffs stay inside the per check timeout.
- * A retry is not a second source: falling back to another log aggregator would
- * change what the finding means, so a failure stays a failure.
+ * crt.sh retried with backoff, then Cert Spotter once. crt.sh answers 502 for
+ * hours at a time, and a single source turns a healthy vendor into an unassessed
+ * one. Both are keyless mirrors of the same public logs, so the fallback does not
+ * change what the finding means, and the result records which one answered. Three
+ * crt.sh attempts at eight seconds with two and four second backoffs plus one ten
+ * second fallback stay inside the per check timeout. The script names its source
+ * on a marker line so the parser never has to infer it from the JSON shape.
  */
 export const CT_SCRIPT = `
 set -u
@@ -17,34 +18,59 @@ UA="$2"
 BODY=""
 for delay in 0 2 4; do
   if [ "$delay" -gt 0 ]; then sleep "$delay"; fi
-  BODY=$(curl -sS --max-time 10 -A "$UA" "https://crt.sh/?q=%25.$D&output=json" 2>/dev/null || true)
+  BODY=$(curl -sS --max-time 8 -A "$UA" "https://crt.sh/?q=%25.$D&output=json" 2>/dev/null || true)
   case "$BODY" in
-    '['*) printf '%s' "$BODY"; exit 0 ;;
+    '['*) printf 'SOURCE crt.sh\\n%s' "$BODY"; exit 0 ;;
   esac
 done
-printf '%s' "$BODY"
+BODY=$(curl -sS --max-time 10 -A "$UA" "https://api.certspotter.com/v1/issuances?domain=$D&include_subdomains=true&expand=dns_names" 2>/dev/null || true)
+case "$BODY" in
+  '['*) printf 'SOURCE certspotter\\n%s' "$BODY"; exit 0 ;;
+esac
+printf 'SOURCE none\\n'
 `;
 
-function unavailable(error: string): CtResult {
-  return { status: "unavailable", source: "crt.sh", total: 0, sample: [], error };
+const MARKER = /^SOURCE (crt\.sh|certspotter|none)\r?\n?([\s\S]*)$/;
+
+function unavailable(error: string, source: CtResult["source"] = "crt.sh"): CtResult {
+  return { status: "unavailable", source, total: 0, sample: [], error };
+}
+
+function unusable(answered: string | undefined): CtResult {
+  if (answered === "crt.sh") return unavailable("crt.sh answered but the response was not usable JSON.");
+  if (answered === "certspotter") {
+    return unavailable("Cert Spotter answered but the response was not usable JSON.", "certspotter");
+  }
+  return unavailable("Neither crt.sh nor Cert Spotter returned usable Certificate Transparency data.");
+}
+
+/** crt.sh joins the names of one certificate with newlines; Cert Spotter lists them. */
+function namesIn(entry: unknown): string[] {
+  const record = entry as { name_value?: unknown; dns_names?: unknown } | null | undefined;
+  const joined = record?.name_value;
+  if (typeof joined === "string") return joined.split(/\r?\n/);
+  const listed = record?.dns_names;
+  if (Array.isArray(listed)) return listed.filter((name): name is string => typeof name === "string");
+  return [];
 }
 
 export function parseCt(stdout: string, domain: string): CtResult {
+  const marked = MARKER.exec(stdout.trimStart());
+  const answered = marked?.[1];
+  const source: CtResult["source"] = answered === "certspotter" ? "certspotter" : "crt.sh";
+  const body = marked ? marked[2] ?? "" : stdout;
+
   let parsed: unknown;
   try {
-    parsed = JSON.parse(stdout.trim());
+    parsed = JSON.parse(body.trim());
   } catch {
-    return unavailable("Certificate Transparency lookup did not return usable JSON.");
+    return unusable(answered);
   }
-  if (!Array.isArray(parsed)) {
-    return unavailable("Certificate Transparency lookup did not return usable JSON.");
-  }
+  if (!Array.isArray(parsed)) return unusable(answered);
 
   const names = new Set<string>();
   for (const entry of parsed) {
-    const value: unknown = (entry as { name_value?: unknown } | null)?.name_value;
-    if (typeof value !== "string") continue;
-    for (const raw of value.split(/\r?\n/)) {
+    for (const raw of namesIn(entry)) {
       const name = raw.trim().toLowerCase().replace(/^\*\./, "");
       if (!name) continue;
       if (name !== domain && !name.endsWith(`.${domain}`)) continue;
@@ -55,7 +81,7 @@ export function parseCt(stdout: string, domain: string): CtResult {
   const sorted = [...names].sort();
   return {
     status: "info",
-    source: "crt.sh",
+    source,
     total: sorted.length,
     sample: sorted.slice(0, MAX_CT_SUBDOMAINS_SHOWN),
   };
