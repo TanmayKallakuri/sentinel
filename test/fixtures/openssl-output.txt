@@ -1,0 +1,24 @@
+=== HANDSHAKE ===
+CONNECTED(00000003)
+depth=2 C = US, O = Internet Security Research Group, CN = ISRG Root X1
+verify return:1
+---
+Certificate chain
+ 0 s:CN = acme.com
+   i:C = US, O = Let's Encrypt, CN = R3
+---
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+SSL handshake has read 4321 bytes and written 789 bytes
+Protocol  : TLSv1.3
+Verify return code: 0 (ok)
+=== CERT ===
+notBefore=Jan  1 00:00:00 2026 GMT
+notAfter=Apr  1 00:00:00 2026 GMT
+issuer=C = US, O = Let's Encrypt, CN = R3
+subject=CN = acme.com
+=== TLS12 ===
+New, TLSv1.2, Cipher is ECDHE-RSA-AES256-GCM-SHA384
+=== TLS13 ===
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+=== LEGACY ===
+unsupported
