@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import type { Report } from "@/lib/types";
 import { ReportView } from "./ReportView";
@@ -27,7 +28,9 @@ function messageFor(status: number, body: string, retryAfter: string | null): st
   return `The scan did not complete. The server answered ${status}.`;
 }
 
-export function ScanForm() {
+// The flag itself is read on the server and arrives as a prop, because the
+// browser has no business knowing the deployment's environment.
+export function ScanForm({ enabled }: { enabled: boolean }) {
   const [domain, setDomain] = useState("");
   const [state, setState] = useState<"idle" | "running">("idle");
   const [error, setError] = useState<string | null>(null);
@@ -61,6 +64,20 @@ export function ScanForm() {
     } finally {
       setState("idle");
     }
+  }
+
+  if (!enabled) {
+    return (
+      <section className="card">
+        <p style={{ margin: 0 }}>
+          Live scanning is switched off on this instance, so no new scan can be run here.
+        </p>
+        <p className="muted" style={{ margin: "8px 0 0" }}>
+          The bundled sample reports are stored results from real scans and read exactly like a live
+          one. <Link href="/">Open a sample report</Link>.
+        </p>
+      </section>
+    );
   }
 
   return (

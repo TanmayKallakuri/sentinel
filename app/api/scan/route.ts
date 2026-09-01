@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { normalizeDomain } from "@/lib/domain";
+import {
+  LIVE_SCANS_DISABLED_MESSAGE,
+  SAMPLES_PATH,
+  liveScansEnabled,
+} from "@/lib/live-scans";
 import { runScan } from "@/lib/orchestrator";
 import { checkRateLimit } from "@/lib/rate-limit";
 
@@ -24,6 +29,16 @@ function safeMessage(error: unknown): string {
 }
 
 export async function POST(request: NextRequest) {
+  // First, ahead of the rate limiter and of reading the body at all, so a
+  // switched off instance can never reach the code that constructs a Solari
+  // client and therefore can never spend a credit.
+  if (!liveScansEnabled()) {
+    return NextResponse.json(
+      { error: LIVE_SCANS_DISABLED_MESSAGE, samples: SAMPLES_PATH },
+      { status: 503 },
+    );
+  }
+
   const declared = Number(request.headers.get("content-length") ?? "0");
   if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
     return NextResponse.json({ error: "Request body is too large." }, { status: 413 });
