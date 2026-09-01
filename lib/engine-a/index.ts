@@ -71,6 +71,29 @@ export async function runEngineA(domain: string, scanId: string): Promise<Engine
           continue;
         }
 
+        // The same site check on the link href happens before navigation, and
+        // goto follows redirects, so it has to run again on where we actually
+        // landed. This is not hypothetical: status.github.com answers 301 to
+        // www.githubstatus.com, and several trust pages redirect to third party
+        // portals. Reading that page would let another domain's content supply
+        // governance evidence credited to this vendor.
+        const landedHost = (() => {
+          try {
+            return new URL(page.url()).hostname;
+          } catch {
+            return "";
+          }
+        })();
+        if (!isSameSite(landedHost, domain)) {
+          pages.push({
+            url,
+            status: "redirected_offsite",
+            httpStatus,
+            redirectedTo: landedHost,
+          });
+          continue;
+        }
+
         const title: string = await page.title();
         // page.evaluate and page.$$eval below are Playwright's page context
         // APIs, not JavaScript eval. They serialise this function and run it in
@@ -144,8 +167,14 @@ export async function runEngineA(domain: string, scanId: string): Promise<Engine
     }
   });
 
+  const offsiteRedirects = pages.flatMap((visit) =>
+    visit.status === "redirected_offsite" && visit.redirectedTo
+      ? [{ url: visit.url, redirectedTo: visit.redirectedTo }]
+      : [],
+  );
+
   return {
-    signals: detectSignals(collected),
+    signals: detectSignals(collected, offsiteRedirects),
     pages,
     screenshots,
     robotsRespected: true,

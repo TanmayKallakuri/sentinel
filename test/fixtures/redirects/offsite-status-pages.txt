@@ -1,0 +1,30 @@
+# Real redirect chains captured 2026-09-01 with:
+#   curl -sIL --max-time 10 <url>
+# Each block: the requested URL, every Location hop, and the landed URL.
+# These are the trust surfaces Engine A probes: a status page that redirects
+# to a different registrable domain is common, not hypothetical.
+
+REQUESTED https://status.github.com
+  HTTP/1.1 301 Moved Permanently
+  Location: https://www.githubstatus.com/
+  HTTP/1.1 200 OK
+LANDED https://www.githubstatus.com/
+
+REQUESTED https://status.anthropic.com
+  HTTP/1.1 301 Moved Permanently
+  Location: https://status.claude.com/
+  HTTP/1.1 200 OK
+LANDED https://status.claude.com/
+
+REQUESTED https://status.notion.so
+  HTTP/1.1 301 Moved Permanently
+  Location: https://www.notion-status.com/
+  HTTP/1.1 200 OK
+LANDED https://www.notion-status.com/
+
+REQUESTED https://status.shopify.com
+  HTTP/1.1 301 Moved Permanently
+  Location: https://www.shopifystatus.com/
+  HTTP/1.1 200 OK
+LANDED https://www.shopifystatus.com/
+

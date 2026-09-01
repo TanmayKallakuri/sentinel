@@ -1,4 +1,16 @@
-export type CheckStatus = "pass" | "warn" | "fail" | "info" | "unavailable";
+/**
+ * "unavailable" means Sentinel could not run the check. "unverified" means the
+ * check ran and reached something Sentinel deliberately refused to read, such as
+ * a trust page that redirected to a domain outside the scan target. Both are
+ * excluded from scoring, but they are different facts and the report says which.
+ */
+export type CheckStatus =
+  | "pass"
+  | "warn"
+  | "fail"
+  | "info"
+  | "unavailable"
+  | "unverified";
 
 export interface Evidence {
   url?: string;
@@ -53,11 +65,13 @@ export interface Screenshot {
 
 export interface PageVisit {
   url: string;
-  status: "loaded" | "not_found" | "error" | "skipped_by_robots";
+  status: "loaded" | "not_found" | "error" | "skipped_by_robots" | "redirected_offsite";
   httpStatus?: number;
   title?: string;
   screenshotId?: string;
   textLength?: number;
+  /** Host the request landed on when a redirect left the scan target. */
+  redirectedTo?: string;
   error?: string;
 }
 

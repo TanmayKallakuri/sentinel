@@ -81,10 +81,28 @@ function excerptAround(text: string, index: number, matchLength: number): string
   return text.slice(start, end).replace(/\s+/g, " ").trim();
 }
 
+export interface OffsiteRedirect {
+  /** The probed URL, which is on the scan target's own domain. */
+  url: string;
+  /** The host it landed on, outside the scan target. */
+  redirectedTo: string;
+}
+
+/** A status surface is status.<domain> or a /status path on the target. */
+function isStatusSurface(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return parsed.hostname.startsWith("status.") || /\/status(\/|$)/.test(parsed.pathname);
+  } catch {
+    return false;
+  }
+}
+
 export function detectSignals(
   pages: { url: string; text: string }[],
+  offsiteRedirects: OffsiteRedirect[] = [],
 ): GovernanceSignalResult[] {
-  return SIGNALS.map((signal) => {
+  const results: GovernanceSignalResult[] = SIGNALS.map((signal) => {
     for (const page of pages) {
       // The URL is searched alongside the text because a page's own address is
       // evidence that text alone does not carry. A live scan loaded
@@ -108,4 +126,25 @@ export function detectSignals(
     }
     return { id: signal.id, label: signal.label, found: false };
   });
+
+  // The status page signal alone is satisfied by a redirect rather than by
+  // content. status.<vendor>.com answering 301 to a status provider is the
+  // vendor's own DNS and their own redirect, so its existence is the evidence
+  // and nobody else's page has to be trusted for it. status.github.com to
+  // www.githubstatus.com is the common shape. Every other signal is a claim
+  // about content, so reaching one through an off-site redirect leaves it
+  // unverified rather than found.
+  const status = results.find((result) => result.id === "status_page");
+  if (status && !status.found) {
+    const redirect = offsiteRedirects.find((entry) => isStatusSurface(entry.url));
+    if (redirect) {
+      status.found = true;
+      status.evidence = {
+        url: redirect.url,
+        raw: `${redirect.url} redirected off-site to ${redirect.redirectedTo}`,
+      };
+    }
+  }
+
+  return results;
 }
