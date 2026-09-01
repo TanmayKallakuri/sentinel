@@ -33,7 +33,14 @@ export function parseTls(stdout: string, now: Date): TlsResult {
   const cert = section(stdout, "CERT");
   const legacyTestable = section(stdout, "LEGACY").trim() === "supported";
 
-  const negotiatedProtocol = /^Protocol\s*:\s*(\S+)/m.exec(handshake)?.[1];
+  // Because the script feeds s_client an immediate EOF, openssl exits before it
+  // prints its SSL-Session summary, so the "Protocol :" line this once parsed is
+  // absent from real output. The "New, TLSv1.3, Cipher is ..." line is what is
+  // actually emitted. The SSL-Session form is still tried first, since some
+  // builds and invocations do print it.
+  const negotiatedProtocol =
+    /^\s*Protocol\s*:\s*(\S+)/m.exec(handshake)?.[1]
+    ?? /^New,\s*(TLSv[\d.]+)/m.exec(handshake)?.[1];
   const verifyMessage = /Verify return code:\s*(.+)$/m.exec(handshake)?.[1]?.trim();
   const notBefore = /notBefore=(.+)$/m.exec(cert)?.[1]?.trim();
   const notAfter = /notAfter=(.+)$/m.exec(cert)?.[1]?.trim();

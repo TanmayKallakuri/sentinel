@@ -46,3 +46,65 @@ describe("parseTls", () => {
     expect(empty.status).toBe("unavailable");
   });
 });
+
+describe("parseTls against the indentation openssl actually emits", () => {
+  // The hand written fixture put "Protocol :" at column zero. Real openssl
+  // prints it inside an indented SSL-Session block, so a parser anchored to
+  // ^Protocol passes its fixture and then finds nothing against every real
+  // server. This pins the real shape.
+  const REAL = [
+    "=== HANDSHAKE ===",
+    "CONNECTED(00000003)",
+    "SSL-Session:",
+    "    Protocol  : TLSv1.3",
+    "    Cipher    : TLS_AES_256_GCM_SHA384",
+    "Verify return code: 0 (ok)",
+    "=== CERT ===",
+    "notBefore=Jul 28 00:00:00 2026 GMT",
+    "notAfter=Nov 12 23:59:59 2026 GMT",
+    "issuer=C = US, O = DigiCert Inc, CN = DigiCert Global G3 TLS ECC SHA384 2020 CA1",
+    "=== TLS12 ===",
+    "New, TLSv1.2, Cipher is ECDHE-RSA-AES256-GCM-SHA384",
+    "=== TLS13 ===",
+    "New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384",
+    "=== LEGACY ===",
+    "unsupported",
+  ].join("\n");
+
+  it("reads the negotiated protocol despite the indentation", () => {
+    expect(parseTls(REAL, new Date("2026-09-01T00:00:00Z")).negotiatedProtocol).toBe("TLSv1.3");
+  });
+
+  it("still reads it when a fixture leaves it unindented", () => {
+    expect(parseTls(REAL.replace("    Protocol", "Protocol"), new Date()).negotiatedProtocol).toBe("TLSv1.3");
+  });
+});
+
+describe("parseTls against output with no SSL-Session block", () => {
+  // Captured from a real scan: feeding s_client an immediate EOF makes openssl
+  // exit before printing its session summary, so "Protocol :" never appears and
+  // the "New," line is the only record of what was negotiated.
+  const NO_SESSION = [
+    "=== HANDSHAKE ===",
+    "CONNECTED(00000003)",
+    "New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384",
+    "Verify return code: 0 (ok)",
+    "=== CERT ===",
+    "notAfter=Nov 12 23:59:59 2026 GMT",
+    "issuer=C = US, O = DigiCert Inc",
+    "=== TLS12 ===",
+    "New, TLSv1.2, Cipher is ECDHE-ECDSA-AES128-GCM-SHA256",
+    "=== TLS13 ===",
+    "New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384",
+    "=== LEGACY ===",
+    "supported",
+  ].join("\n");
+
+  it("falls back to the New line for the negotiated protocol", () => {
+    expect(parseTls(NO_SESSION, new Date("2026-09-01T00:00:00Z")).negotiatedProtocol).toBe("TLSv1.3");
+  });
+
+  it("does not confuse the TLS12 probe section for the negotiated protocol", () => {
+    expect(parseTls(NO_SESSION, new Date("2026-09-01T00:00:00Z")).tls12Supported).toBe(true);
+  });
+});
