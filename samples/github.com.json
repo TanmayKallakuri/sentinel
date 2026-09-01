@@ -1,0 +1,504 @@
+{
+  "schemaVersion": 1,
+  "scanId": "d042b314-8da2-4672-acf5-62ac0d3d2539",
+  "domain": "github.com",
+  "scannedAt": "2026-09-01T22:07:23.623Z",
+  "overallScore": 77.8,
+  "assessedPoints": 90,
+  "grade": "C",
+  "categories": [
+    {
+      "id": "governance",
+      "label": "Governance and compliance",
+      "weight": 25,
+      "pointsEarned": 13,
+      "pointsAvailable": 25,
+      "pointsNotAssessed": 0,
+      "score": 13,
+      "findings": [
+        {
+          "id": "governance.soc2",
+          "label": "SOC 2 attestation referenced",
+          "status": "pass",
+          "observation": "Found on https://github.com/security.",
+          "pointsEarned": 4,
+          "pointsAvailable": 4,
+          "evidence": {
+            "url": "https://github.com/security",
+            "excerpt": "workflow. Read about platform security GitHub’s API stays secure with ISO, SOC 2, and GDPR. Visit the Trust Center Join the companies that secure their code"
+          }
+        },
+        {
+          "id": "governance.iso27001",
+          "label": "ISO 27001 certification referenced",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 3
+        },
+        {
+          "id": "governance.pci_dss",
+          "label": "PCI DSS referenced",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 1
+        },
+        {
+          "id": "governance.gdpr",
+          "label": "GDPR referenced",
+          "status": "pass",
+          "observation": "Found on https://github.com/security.",
+          "pointsEarned": 2,
+          "pointsAvailable": 2,
+          "evidence": {
+            "url": "https://github.com/security",
+            "excerpt": "Read about platform security GitHub’s API stays secure with ISO, SOC 2, and GDPR. Visit the Trust Center Join the companies that secure their code with GitH"
+          }
+        },
+        {
+          "id": "governance.dpa",
+          "label": "Data processing agreement referenced",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "governance.vuln_disclosure",
+          "label": "Vulnerability disclosure policy published",
+          "status": "pass",
+          "observation": "Found on https://github.com/.well-known/security.txt.",
+          "pointsEarned": 4,
+          "pointsAvailable": 4,
+          "evidence": {
+            "url": "https://github.com/.well-known/security.txt",
+            "excerpt": "https://github.com/.well-known/security.txt Contact: https://hackerone.com/github Acknowledgments: https://hackerone.com/gi"
+          }
+        },
+        {
+          "id": "governance.bug_bounty",
+          "label": "Bug bounty program published",
+          "status": "pass",
+          "observation": "Found on https://github.com/.well-known/security.txt.",
+          "pointsEarned": 2,
+          "pointsAvailable": 2,
+          "evidence": {
+            "url": "https://github.com/.well-known/security.txt",
+            "excerpt": "https://github.com/.well-known/security.txt Contact: https://hackerone.com/github Acknowledgments: https://hackerone.com/github/hacktivity Preferred-L"
+          }
+        },
+        {
+          "id": "governance.subprocessors",
+          "label": "Subprocessor list published",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 3
+        },
+        {
+          "id": "governance.security_contact",
+          "label": "Security contact published",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 3
+        },
+        {
+          "id": "governance.status_page",
+          "label": "Status or uptime page published",
+          "status": "pass",
+          "observation": "Found on https://status.github.com/.",
+          "pointsEarned": 1,
+          "pointsAvailable": 1,
+          "evidence": {
+            "url": "https://status.github.com/",
+            "raw": "https://status.github.com/ redirected off-site to www.githubstatus.com"
+          }
+        },
+        {
+          "id": "governance.offsite.1",
+          "label": "Trust surface redirected to another domain",
+          "status": "unverified",
+          "observation": "https://status.github.com/ redirected to www.githubstatus.com, which is outside the scan target, so the page content was not read and no governance signal was credited from it.",
+          "pointsEarned": 0,
+          "pointsAvailable": 0,
+          "evidence": {
+            "url": "https://status.github.com/"
+          }
+        }
+      ]
+    },
+    {
+      "id": "transport",
+      "label": "Transport security",
+      "weight": 20,
+      "pointsEarned": 20,
+      "pointsAvailable": 20,
+      "pointsNotAssessed": 0,
+      "score": 20,
+      "findings": [
+        {
+          "id": "transport.chain",
+          "label": "Certificate chain validates",
+          "status": "pass",
+          "observation": "Chain validated with verify return code 0 (ok).",
+          "pointsEarned": 6,
+          "pointsAvailable": 6,
+          "evidence": {
+            "raw": "C = GB, O = Sectigo Limited, CN = Sectigo Public Server Authentication CA DV E36"
+          }
+        },
+        {
+          "id": "transport.notExpired",
+          "label": "Certificate is within its validity window",
+          "status": "pass",
+          "observation": "Certificate notAfter is Nov 29 23:59:59 2026 GMT, 89 days from the scan.",
+          "pointsEarned": 5,
+          "pointsAvailable": 5
+        },
+        {
+          "id": "transport.renewalHeadroom",
+          "label": "At least 30 days before expiry",
+          "status": "pass",
+          "observation": "89 days of validity remain.",
+          "pointsEarned": 3,
+          "pointsAvailable": 3
+        },
+        {
+          "id": "transport.tls13",
+          "label": "TLS 1.3 negotiated",
+          "status": "pass",
+          "observation": "TLS 1.3 handshake succeeded.",
+          "pointsEarned": 4,
+          "pointsAvailable": 4
+        },
+        {
+          "id": "transport.tls12",
+          "label": "TLS 1.2 negotiated",
+          "status": "pass",
+          "observation": "TLS 1.2 handshake succeeded.",
+          "pointsEarned": 2,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "transport.legacy",
+          "label": "Legacy TLS 1.0 and 1.1 support",
+          "status": "unavailable",
+          "observation": "The scanner's OpenSSL build can test legacy protocols; results are informational only.",
+          "pointsEarned": 0,
+          "pointsAvailable": 0
+        }
+      ]
+    },
+    {
+      "id": "headers",
+      "label": "Application security headers",
+      "weight": 15,
+      "pointsEarned": 14,
+      "pointsAvailable": 15,
+      "pointsNotAssessed": 0,
+      "score": 14,
+      "findings": [
+        {
+          "id": "headers.hsts",
+          "label": "Strict-Transport-Security",
+          "status": "pass",
+          "observation": "Header present with max-age 31536000.",
+          "pointsEarned": 4,
+          "pointsAvailable": 4,
+          "evidence": {
+            "raw": "max-age=31536000; includeSubdomains; preload"
+          }
+        },
+        {
+          "id": "headers.csp",
+          "label": "Content-Security-Policy",
+          "status": "pass",
+          "observation": "Header present on the root response.",
+          "pointsEarned": 4,
+          "pointsAvailable": 4,
+          "evidence": {
+            "raw": "default-src 'none'; base-uri 'self'; child-src github.githubassets.com github.com/assets-cdn/worker/ github.com/assets/ gist.github.com/assets-cdn/worker/; connect-src 'self' uploads.github.com www.githubstatus.com collector.github.com raw.githubusercontent.com api.github.com github-cloud.s3.amazonaws.com github-production-repository-file-5c1aeb.s3.amazonaws.com github-production-upload-manifest-file-7fdce7.s3.amazonaws.com github-production-user-asset-6210df.s3.amazonaws.com *.rel.tunnels.api.visualstudio.com wss://*.rel.tunnels.api.visualstudio.com github.githubassets.com objects-origin.githubusercontent.com copilot-proxy.githubusercontent.com proxy.individual.githubcopilot.com proxy.business.githubcopilot.com proxy.enterprise.githubcopilot.com *.actions.githubusercontent.com wss://*.actions.githubusercontent.com productionresultssa0.blob.core.windows.net productionresultssa1.blob.core.windows.net productionresultssa2.blob.core.windows.net productionresultssa3.blob.core.windows.net productionresultssa4.blob.core.windows.net productionresultssa5.blob.core.windows.net productionresultssa6.blob.core.windows.net productionresultssa7.blob.core.windows.net productionresultssa8.blob.core.windows.net productionresultssa9.blob.core.windows.net productionresultssa10.blob.core.windows.net productionresultssa11.blob.core.windows.net productionresultssa12.blob.core.windows.net productionresultssa13.blob.core.windows.net productionresultssa14.blob.core.windows.net productionresultssa15.blob.core.windows.net productionresultssa16.blob.core.windows.net productionresultssa17.blob.core.windows.net productionresultssa18.blob.core.windows.net productionresultssa19.blob.core.windows.net github-production-repository-image-32fea6.s3.amazonaws.com github-production-release-asset-2e65be.s3.amazonaws.com insights.github.com wss://alive.github.com wss://alive-staging.github.com api.githubcopilot.com api.individual.githubcopilot.com api.business.githubcopilot.com api.enterprise.githubcopilot.com wss://production-copilot-host.webpubsub.azure.com edge.fullstory.com rs.fullstory.com; font-src github.githubassets.com; form-action 'self' github.com gist.github.com copilot-workspace.githubnext.com objects-origin.githubusercontent.com; frame-ancestors 'none'; frame-src viewscreen.githubusercontent.com notebooks.githubusercontent.com www.youtube-nocookie.com; img-src 'self' data: blob: github.githubassets.com media.githubusercontent.com camo.githubusercontent.com identicons.github.com avatars.githubusercontent.com private-avatars.githubusercontent.com github-cloud.s3.amazonaws.com objects.githubusercontent.com release-assets.githubusercontent.com secured-user-images.githubusercontent.com user-images.githubusercontent.com private-user-images.githubusercontent.com opengraph.githubassets.com repository-images.githubusercontent.com marketplace-screenshots.githubusercontent.com copilotprodattachments.blob.core.windows.net/github-production-copilot-attachments/ github-production-user-asset-6210df.s3.amazonaws.com customer-stories-feed.github.com spotlights-feed.github.com explore-feed.github.com objects-origin.githubusercontent.com *.githubusercontent.com images.ctfassets.net/8aevphvgewt8/; manifest-src 'self'; media-src github.com user-images.githubusercontent.com secured-user-images.githubusercontent.com private-user-images.githubusercontent.com github-production-user-asset-6210df.s3.amazonaws.com gist.github.com github.githubassets.com assets.ctfassets.net/8aevphvgewt8/ videos.ctfassets.net/8aevphvgewt8/; script-src github.githubassets.com; style-src 'unsafe-inline' github.githubassets.com; upgrade-insecure-requests; worker-src github.githubassets.com github.com/assets-cdn/worker/ github.com/assets/ gist.github.com/assets-cdn/worker/"
+          }
+        },
+        {
+          "id": "headers.frame",
+          "label": "Framing protection",
+          "status": "pass",
+          "observation": "X-Frame-Options or a CSP frame-ancestors directive is present.",
+          "pointsEarned": 2,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "headers.nosniff",
+          "label": "X-Content-Type-Options",
+          "status": "pass",
+          "observation": "Header present.",
+          "pointsEarned": 2,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "headers.referrer",
+          "label": "Referrer-Policy",
+          "status": "pass",
+          "observation": "Header present.",
+          "pointsEarned": 2,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "headers.permissions",
+          "label": "Permissions-Policy",
+          "status": "fail",
+          "observation": "Header not present.",
+          "pointsEarned": 0,
+          "pointsAvailable": 1
+        }
+      ]
+    },
+    {
+      "id": "email",
+      "label": "Email authentication",
+      "weight": 15,
+      "pointsEarned": 13,
+      "pointsAvailable": 15,
+      "pointsNotAssessed": 0,
+      "score": 13,
+      "findings": [
+        {
+          "id": "email.spf",
+          "label": "SPF record published",
+          "status": "pass",
+          "observation": "An SPF record was published at the root domain.",
+          "pointsEarned": 3,
+          "pointsAvailable": 3,
+          "evidence": {
+            "raw": "v=spf1 ip4:192.30.252.0/22 include:spf.protection.outlook.com include:_netblocks.google.com include:_netblocks2.google.com include:mail.zendesk.com include:_spf.salesforce.com include:servers.mcsv.net include:mktomail.com include:sendgrid.net ip4:62.253.227.114 ip4:166.78.69.169 ip4:166.78.69.170 ip4:166.78.71.131 ~all"
+          }
+        },
+        {
+          "id": "email.spfStrict",
+          "label": "SPF ends in a restrictive all qualifier",
+          "status": "pass",
+          "observation": "SPF ends in ~all.",
+          "pointsEarned": 2,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "email.dmarc",
+          "label": "DMARC record published",
+          "status": "pass",
+          "observation": "A DMARC record was published at _dmarc.",
+          "pointsEarned": 3,
+          "pointsAvailable": 3,
+          "evidence": {
+            "raw": "v=DMARC1; p=quarantine; sp=reject; pct=100; rua=mailto:dmarc@github.com; ruf=mailto:dmarc@github.com; fo=1"
+          }
+        },
+        {
+          "id": "email.dmarcPolicy",
+          "label": "DMARC enforcement policy",
+          "status": "warn",
+          "observation": "DMARC policy is p=quarantine.",
+          "pointsEarned": 2,
+          "pointsAvailable": 4
+        },
+        {
+          "id": "email.dkim",
+          "label": "DKIM selector observed",
+          "status": "pass",
+          "observation": "Answered for selector or selectors: selector1, google, k1.",
+          "pointsEarned": 3,
+          "pointsAvailable": 3
+        }
+      ]
+    },
+    {
+      "id": "dns",
+      "label": "DNS hygiene",
+      "weight": 10,
+      "pointsEarned": 5,
+      "pointsAvailable": 10,
+      "pointsNotAssessed": 0,
+      "score": 5,
+      "findings": [
+        {
+          "id": "dns.caa",
+          "label": "CAA record published",
+          "status": "pass",
+          "observation": "7 CAA record or records published.",
+          "pointsEarned": 5,
+          "pointsAvailable": 5,
+          "evidence": {
+            "raw": "0 issue \"digicert.com\" | 0 issue \"globalsign.com\" | 0 issue \"letsencrypt.org\" | 0 issue \"sectigo.com\" | 0 issuewild \"digicert.com\" | 0 issuewild \"letsencrypt.org\" | 0 issuewild \"sectigo.com\""
+          }
+        },
+        {
+          "id": "dns.dnssec",
+          "label": "DNSSEC delegation present",
+          "status": "fail",
+          "observation": "No DS record was published at the parent zone.",
+          "pointsEarned": 0,
+          "pointsAvailable": 5
+        }
+      ]
+    },
+    {
+      "id": "cve",
+      "label": "Observed software and public CVEs",
+      "weight": 15,
+      "pointsEarned": 5,
+      "pointsAvailable": 5,
+      "pointsNotAssessed": 10,
+      "score": 5,
+      "findings": [
+        {
+          "id": "cve.versionDisclosure",
+          "label": "No software version disclosed in public responses",
+          "status": "pass",
+          "observation": "No versioned software was disclosed in the observed response headers or generator tag.",
+          "pointsEarned": 5,
+          "pointsAvailable": 5
+        },
+        {
+          "id": "cve.critical",
+          "label": "No associated public CVE at CVSS 9.0 or above",
+          "status": "unavailable",
+          "observation": "No observed software carried both a version and a known CPE mapping, so no associated public CVE lookup was possible.",
+          "pointsEarned": 0,
+          "pointsAvailable": 0
+        },
+        {
+          "id": "cve.high",
+          "label": "No associated public CVE at CVSS 7.0 or above",
+          "status": "unavailable",
+          "observation": "No observed software carried both a version and a known CPE mapping, so no associated public CVE lookup was possible.",
+          "pointsEarned": 0,
+          "pointsAvailable": 0
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "id": "3de4ed82-cff0-48c8-bd16-43e4af8058da",
+      "url": "https://github.com/",
+      "capturedAt": "2026-09-01T22:06:59.837Z",
+      "source": "static",
+      "path": "/samples/github.com/3de4ed82-cff0-48c8-bd16-43e4af8058da.jpg"
+    },
+    {
+      "id": "cc49f229-d122-4b74-a70b-78705b30dab5",
+      "url": "https://github.com/security",
+      "capturedAt": "2026-09-01T22:07:03.349Z",
+      "source": "static",
+      "path": "/samples/github.com/cc49f229-d122-4b74-a70b-78705b30dab5.jpg"
+    },
+    {
+      "id": "090fd04c-737c-418f-bac9-47bd6fc9257c",
+      "url": "https://github.com/trust",
+      "capturedAt": "2026-09-01T22:07:05.503Z",
+      "source": "static",
+      "path": "/samples/github.com/090fd04c-737c-418f-bac9-47bd6fc9257c.jpg"
+    },
+    {
+      "id": "d9a63eae-5ec3-4db0-9577-149a83b8504c",
+      "url": "https://github.com/privacy",
+      "capturedAt": "2026-09-01T22:07:07.828Z",
+      "source": "static",
+      "path": "/samples/github.com/d9a63eae-5ec3-4db0-9577-149a83b8504c.jpg"
+    },
+    {
+      "id": "45a43941-fb5a-4cdc-8836-c1289968e6bd",
+      "url": "https://github.com/.well-known/security.txt",
+      "capturedAt": "2026-09-01T22:07:10.678Z",
+      "source": "static",
+      "path": "/samples/github.com/45a43941-fb5a-4cdc-8836-c1289968e6bd.jpg"
+    },
+    {
+      "id": "c12c6cc6-4bf1-436a-93dd-656f5c722449",
+      "url": "https://github.com/security/advanced-security",
+      "capturedAt": "2026-09-01T22:07:21.144Z",
+      "source": "static",
+      "path": "/samples/github.com/c12c6cc6-4bf1-436a-93dd-656f5c722449.jpg"
+    }
+  ],
+  "subdomains": {
+    "status": "info",
+    "source": "certspotter",
+    "total": 43,
+    "sample": [
+      "api.mcp.github.com",
+      "api.security.github.com",
+      "asset-generator.github.com",
+      "awesome-copilot.github.com",
+      "bug-bash.github.com",
+      "classroom.github.com",
+      "communication.github.com",
+      "copilot-billing-preview.github.com",
+      "copilot-reports.github.com",
+      "design-camp.github.com",
+      "dev-days.github.com",
+      "dev.gtm.github.com",
+      "ducky.github.com",
+      "emails.github.com",
+      "examadmin-uat.github.com",
+      "examadmin.github.com",
+      "examregistration-api.github.com",
+      "examregistration-uat-api.github.com",
+      "f.cloud.github.com",
+      "gameoff.github.com",
+      "garage.github.com",
+      "ghicons.github.com",
+      "gist.github.com",
+      "github.com",
+      "gsnlink.github.com",
+      "livesend.github.com",
+      "m.communication.github.com",
+      "mailing.github.com",
+      "model-launchkit.github.com",
+      "octocaptcha.review-lab.github.com",
+      "pkg.github.com",
+      "proxima-review-lab.github.com",
+      "registry.github.com",
+      "res.communication.github.com",
+      "review-lab.github.com",
+      "smtp.github.com",
+      "spotlights-feed.github.com",
+      "support.enterprise.github.com",
+      "t.communication.github.com",
+      "vpn-ca.iad.github.com",
+      "ws.help.github.com",
+      "ws.support.github.com",
+      "www.github.com"
+    ]
+  },
+  "observedSoftware": [
+    {
+      "product": "github.com",
+      "source": "server header",
+      "cveLookup": "skipped_no_version",
+      "cves": []
+    }
+  ],
+  "timings": {
+    "totalMs": 35979,
+    "engines": [
+      {
+        "engine": "B",
+        "elapsedMs": 31142,
+        "status": "ok"
+      },
+      {
+        "engine": "A",
+        "elapsedMs": 35977,
+        "status": "ok"
+      }
+    ]
+  },
+  "notes": [
+    "This report was assessed on 90 of 100 points. Checks that could not be run are excluded from both the earned and the available side of the score.",
+    "Observed software and public CVEs: 10 of its 15 points were not assessed and are excluded from the score.",
+    "Governance signals reflect only the public pages listed in the evidence. Absence of a signal means nothing was found at those locations, not that the control is absent."
+  ]
+}

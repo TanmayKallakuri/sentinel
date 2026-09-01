@@ -1,0 +1,445 @@
+{
+  "schemaVersion": 1,
+  "scanId": "5856a42f-c7ca-4c33-8676-6f6fb07f6bb7",
+  "domain": "craigslist.org",
+  "scannedAt": "2026-09-01T22:08:14.405Z",
+  "overallScore": 58.9,
+  "assessedPoints": 90,
+  "grade": "D",
+  "categories": [
+    {
+      "id": "governance",
+      "label": "Governance and compliance",
+      "weight": 25,
+      "pointsEarned": 7,
+      "pointsAvailable": 25,
+      "pointsNotAssessed": 0,
+      "score": 7,
+      "findings": [
+        {
+          "id": "governance.soc2",
+          "label": "SOC 2 attestation referenced",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 4
+        },
+        {
+          "id": "governance.iso27001",
+          "label": "ISO 27001 certification referenced",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 3
+        },
+        {
+          "id": "governance.pci_dss",
+          "label": "PCI DSS referenced",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 1
+        },
+        {
+          "id": "governance.gdpr",
+          "label": "GDPR referenced",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "governance.dpa",
+          "label": "Data processing agreement referenced",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "governance.vuln_disclosure",
+          "label": "Vulnerability disclosure policy published",
+          "status": "pass",
+          "observation": "Found on https://craigslist.org/.well-known/security.txt.",
+          "pointsEarned": 4,
+          "pointsAvailable": 4,
+          "evidence": {
+            "url": "https://craigslist.org/.well-known/security.txt",
+            "excerpt": "https://craigslist.org/.well-known/security.txt Contact: mailto:security@craigslist.org Contact: https://www.craigslist.org/con"
+          }
+        },
+        {
+          "id": "governance.bug_bounty",
+          "label": "Bug bounty program published",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "governance.subprocessors",
+          "label": "Subprocessor list published",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 3
+        },
+        {
+          "id": "governance.security_contact",
+          "label": "Security contact published",
+          "status": "pass",
+          "observation": "Found on https://craigslist.org/.well-known/security.txt.",
+          "pointsEarned": 3,
+          "pointsAvailable": 3,
+          "evidence": {
+            "url": "https://craigslist.org/.well-known/security.txt",
+            "excerpt": "https://craigslist.org/.well-known/security.txt Contact: mailto:security@craigslist.org Contact: https://www.craigslist.org/contact?step=form&reqType=security Expires:"
+          }
+        },
+        {
+          "id": "governance.status_page",
+          "label": "Status or uptime page published",
+          "status": "fail",
+          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "pointsEarned": 0,
+          "pointsAvailable": 1
+        }
+      ]
+    },
+    {
+      "id": "transport",
+      "label": "Transport security",
+      "weight": 20,
+      "pointsEarned": 16,
+      "pointsAvailable": 20,
+      "pointsNotAssessed": 0,
+      "score": 16,
+      "findings": [
+        {
+          "id": "transport.chain",
+          "label": "Certificate chain validates",
+          "status": "pass",
+          "observation": "Chain validated with verify return code 0 (ok).",
+          "pointsEarned": 6,
+          "pointsAvailable": 6,
+          "evidence": {
+            "raw": "C = US, O = DigiCert Inc, CN = DigiCert Global G3 TLS ECC SHA384 2020 CA1"
+          }
+        },
+        {
+          "id": "transport.notExpired",
+          "label": "Certificate is within its validity window",
+          "status": "pass",
+          "observation": "Certificate notAfter is Jan 31 23:59:59 2027 GMT, 152 days from the scan.",
+          "pointsEarned": 5,
+          "pointsAvailable": 5
+        },
+        {
+          "id": "transport.renewalHeadroom",
+          "label": "At least 30 days before expiry",
+          "status": "pass",
+          "observation": "152 days of validity remain.",
+          "pointsEarned": 3,
+          "pointsAvailable": 3
+        },
+        {
+          "id": "transport.tls13",
+          "label": "TLS 1.3 negotiated",
+          "status": "fail",
+          "observation": "TLS 1.3 handshake did not succeed.",
+          "pointsEarned": 0,
+          "pointsAvailable": 4
+        },
+        {
+          "id": "transport.tls12",
+          "label": "TLS 1.2 negotiated",
+          "status": "pass",
+          "observation": "TLS 1.2 handshake succeeded.",
+          "pointsEarned": 2,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "transport.legacy",
+          "label": "Legacy TLS 1.0 and 1.1 support",
+          "status": "unavailable",
+          "observation": "The scanner's OpenSSL build can test legacy protocols; results are informational only.",
+          "pointsEarned": 0,
+          "pointsAvailable": 0
+        }
+      ]
+    },
+    {
+      "id": "headers",
+      "label": "Application security headers",
+      "weight": 15,
+      "pointsEarned": 10,
+      "pointsAvailable": 15,
+      "pointsNotAssessed": 0,
+      "score": 10,
+      "findings": [
+        {
+          "id": "headers.hsts",
+          "label": "Strict-Transport-Security",
+          "status": "pass",
+          "observation": "Header present with max-age 63072000.",
+          "pointsEarned": 4,
+          "pointsAvailable": 4,
+          "evidence": {
+            "raw": "max-age=63072000"
+          }
+        },
+        {
+          "id": "headers.csp",
+          "label": "Content-Security-Policy",
+          "status": "pass",
+          "observation": "Header present on the root response.",
+          "pointsEarned": 4,
+          "pointsAvailable": 4,
+          "evidence": {
+            "raw": "base-uri 'self' https://hcaptcha.com https://*.hcaptcha.com; child-src https://*.craigslist.org; connect-src https://*.craigslist.org https://hcaptcha.com https://*.hcaptcha.com; font-src data:; form-action https://*.craigslist.org; frame-ancestors https://*.craigslist.org; frame-src https://*.craigslist.org https://craigslist.org https://hcaptcha.com https://*.hcaptcha.com; media-src data:; object-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' https://*.craigslist.org https://hcaptcha.com https://*.hcaptcha.com; style-src 'unsafe-inline' https://*.craigslist.org https://hcaptcha.com https://*.hcaptcha.com"
+          }
+        },
+        {
+          "id": "headers.frame",
+          "label": "Framing protection",
+          "status": "pass",
+          "observation": "X-Frame-Options or a CSP frame-ancestors directive is present.",
+          "pointsEarned": 2,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "headers.nosniff",
+          "label": "X-Content-Type-Options",
+          "status": "fail",
+          "observation": "Header not present.",
+          "pointsEarned": 0,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "headers.referrer",
+          "label": "Referrer-Policy",
+          "status": "fail",
+          "observation": "Header not present.",
+          "pointsEarned": 0,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "headers.permissions",
+          "label": "Permissions-Policy",
+          "status": "fail",
+          "observation": "Header not present.",
+          "pointsEarned": 0,
+          "pointsAvailable": 1
+        }
+      ]
+    },
+    {
+      "id": "email",
+      "label": "Email authentication",
+      "weight": 15,
+      "pointsEarned": 10,
+      "pointsAvailable": 15,
+      "pointsNotAssessed": 0,
+      "score": 10,
+      "findings": [
+        {
+          "id": "email.spf",
+          "label": "SPF record published",
+          "status": "pass",
+          "observation": "An SPF record was published at the root domain.",
+          "pointsEarned": 3,
+          "pointsAvailable": 3,
+          "evidence": {
+            "raw": "v=spf1 ip4:208.82.237.96/29 ip4:208.82.237.104/31 ip4:208.82.238.96/29 ip4:208.82.238.104/31 -all"
+          }
+        },
+        {
+          "id": "email.spfStrict",
+          "label": "SPF ends in a restrictive all qualifier",
+          "status": "pass",
+          "observation": "SPF ends in -all.",
+          "pointsEarned": 2,
+          "pointsAvailable": 2
+        },
+        {
+          "id": "email.dmarc",
+          "label": "DMARC record published",
+          "status": "pass",
+          "observation": "A DMARC record was published at _dmarc.",
+          "pointsEarned": 3,
+          "pointsAvailable": 3,
+          "evidence": {
+            "raw": "v=DMARC1; p=quarantine; pct=100; rua=mailto:ruarua@craigslist.org; ruf=mailto:rufruf@craigslist.org,mailto:craigslist-dmarc@datafeeds.phishlabs.com;"
+          }
+        },
+        {
+          "id": "email.dmarcPolicy",
+          "label": "DMARC enforcement policy",
+          "status": "warn",
+          "observation": "DMARC policy is p=quarantine.",
+          "pointsEarned": 2,
+          "pointsAvailable": 4
+        },
+        {
+          "id": "email.dkim",
+          "label": "DKIM selector observed",
+          "status": "fail",
+          "observation": "None of the 6 common selectors answered. Absence here does not prove DKIM is unconfigured.",
+          "pointsEarned": 0,
+          "pointsAvailable": 3
+        }
+      ]
+    },
+    {
+      "id": "dns",
+      "label": "DNS hygiene",
+      "weight": 10,
+      "pointsEarned": 5,
+      "pointsAvailable": 10,
+      "pointsNotAssessed": 0,
+      "score": 5,
+      "findings": [
+        {
+          "id": "dns.caa",
+          "label": "CAA record published",
+          "status": "pass",
+          "observation": "2 CAA record or records published.",
+          "pointsEarned": 5,
+          "pointsAvailable": 5,
+          "evidence": {
+            "raw": "0 issue \"digicert.com\" | 0 iodef \"mailto:security@craigslist.org\""
+          }
+        },
+        {
+          "id": "dns.dnssec",
+          "label": "DNSSEC delegation present",
+          "status": "fail",
+          "observation": "No DS record was published at the parent zone.",
+          "pointsEarned": 0,
+          "pointsAvailable": 5
+        }
+      ]
+    },
+    {
+      "id": "cve",
+      "label": "Observed software and public CVEs",
+      "weight": 15,
+      "pointsEarned": 5,
+      "pointsAvailable": 5,
+      "pointsNotAssessed": 10,
+      "score": 5,
+      "findings": [
+        {
+          "id": "cve.versionDisclosure",
+          "label": "No software version disclosed in public responses",
+          "status": "pass",
+          "observation": "No versioned software was disclosed in the observed response headers or generator tag.",
+          "pointsEarned": 5,
+          "pointsAvailable": 5
+        },
+        {
+          "id": "cve.critical",
+          "label": "No associated public CVE at CVSS 9.0 or above",
+          "status": "unavailable",
+          "observation": "No observed software carried both a version and a known CPE mapping, so no associated public CVE lookup was possible.",
+          "pointsEarned": 0,
+          "pointsAvailable": 0
+        },
+        {
+          "id": "cve.high",
+          "label": "No associated public CVE at CVSS 7.0 or above",
+          "status": "unavailable",
+          "observation": "No observed software carried both a version and a known CPE mapping, so no associated public CVE lookup was possible.",
+          "pointsEarned": 0,
+          "pointsAvailable": 0
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "id": "d3ecfb1a-61b6-410f-8fee-e4958813b68e",
+      "url": "https://craigslist.org/",
+      "capturedAt": "2026-09-01T22:07:57.319Z",
+      "source": "static",
+      "path": "/samples/craigslist.org/d3ecfb1a-61b6-410f-8fee-e4958813b68e.jpg"
+    },
+    {
+      "id": "f56929e2-d7a0-4638-9031-dae43eb708da",
+      "url": "https://craigslist.org/.well-known/security.txt",
+      "capturedAt": "2026-09-01T22:08:04.178Z",
+      "source": "static",
+      "path": "/samples/craigslist.org/f56929e2-d7a0-4638-9031-dae43eb708da.jpg"
+    },
+    {
+      "id": "10fc2b61-016b-4ec3-8008-e2059eba331b",
+      "url": "https://www.craigslist.org/about/help/system-status",
+      "capturedAt": "2026-09-01T22:08:12.577Z",
+      "source": "static",
+      "path": "/samples/craigslist.org/10fc2b61-016b-4ec3-8008-e2059eba331b.jpg"
+    },
+    {
+      "id": "f962506d-9114-4da7-a043-4c4f1a771520",
+      "url": "https://www.craigslist.org/search/area/sfbay?cat=sec",
+      "capturedAt": "2026-09-01T22:08:14.263Z",
+      "source": "static",
+      "path": "/samples/craigslist.org/f962506d-9114-4da7-a043-4c4f1a771520.jpg"
+    }
+  ],
+  "subdomains": {
+    "status": "info",
+    "source": "certspotter",
+    "total": 28,
+    "sample": [
+      "accounts.craigslist.org",
+      "bapi.craigslist.org",
+      "ccard-api-200paul.craigslist.org",
+      "ccard-api-ashburn.craigslist.org",
+      "craigslist.org",
+      "mta-sts.alerts.craigslist.org",
+      "mta-sts.comm.craigslist.org",
+      "mta-sts.event.craigslist.org",
+      "mta-sts.gigs.craigslist.org",
+      "mta-sts.hous.craigslist.org",
+      "mta-sts.job.craigslist.org",
+      "mta-sts.reply.craigslist.org",
+      "mta-sts.res.craigslist.org",
+      "mta-sts.sale.craigslist.org",
+      "mta-sts.serv.craigslist.org",
+      "mxi.craigslist.org",
+      "mxia.craigslist.org",
+      "mxicorp.craigslist.org",
+      "mxicorpa.craigslist.org",
+      "mxicorpf.craigslist.org",
+      "mxif.craigslist.org",
+      "outbound.200paul.craigslist.org",
+      "outbound.ashburn.craigslist.org",
+      "outbound.craigslist.org",
+      "outbound.int.craigslist.org",
+      "post.craigslist.org",
+      "secure.craigslist.org",
+      "wapi.craigslist.org"
+    ]
+  },
+  "observedSoftware": [],
+  "timings": {
+    "totalMs": 21746,
+    "engines": [
+      {
+        "engine": "B",
+        "elapsedMs": 17206,
+        "status": "ok"
+      },
+      {
+        "engine": "A",
+        "elapsedMs": 21744,
+        "status": "ok"
+      }
+    ]
+  },
+  "notes": [
+    "This report was assessed on 90 of 100 points. Checks that could not be run are excluded from both the earned and the available side of the score.",
+    "Observed software and public CVEs: 10 of its 15 points were not assessed and are excluded from the score.",
+    "Governance signals reflect only the public pages listed in the evidence. Absence of a signal means nothing was found at those locations, not that the control is absent."
+  ]
+}
