@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "scanId": "5856a42f-c7ca-4c33-8676-6f6fb07f6bb7",
+  "scanId": "89489abe-bb0e-4d1b-8426-f13e95bcf716",
   "domain": "craigslist.org",
-  "scannedAt": "2026-09-01T22:08:14.405Z",
+  "scannedAt": "2026-09-01T22:51:22.513Z",
   "overallScore": 58.9,
   "assessedPoints": 90,
   "grade": "D",
@@ -358,32 +358,25 @@
   ],
   "screenshots": [
     {
-      "id": "d3ecfb1a-61b6-410f-8fee-e4958813b68e",
+      "id": "57008b34-a725-4851-82db-dfee29a36bdb",
       "url": "https://craigslist.org/",
-      "capturedAt": "2026-09-01T22:07:57.319Z",
+      "capturedAt": "2026-09-01T22:51:13.441Z",
       "source": "static",
-      "path": "/samples/craigslist.org/d3ecfb1a-61b6-410f-8fee-e4958813b68e.jpg"
+      "path": "/samples/craigslist.org/57008b34-a725-4851-82db-dfee29a36bdb.jpg"
     },
     {
-      "id": "f56929e2-d7a0-4638-9031-dae43eb708da",
+      "id": "718ccec2-bce6-496c-a93f-a46f8d04c671",
       "url": "https://craigslist.org/.well-known/security.txt",
-      "capturedAt": "2026-09-01T22:08:04.178Z",
+      "capturedAt": "2026-09-01T22:51:16.360Z",
       "source": "static",
-      "path": "/samples/craigslist.org/f56929e2-d7a0-4638-9031-dae43eb708da.jpg"
+      "path": "/samples/craigslist.org/718ccec2-bce6-496c-a93f-a46f8d04c671.jpg"
     },
     {
-      "id": "10fc2b61-016b-4ec3-8008-e2059eba331b",
+      "id": "e76cbf0d-e9fa-4bd3-8add-c9211cbc56f8",
       "url": "https://www.craigslist.org/about/help/system-status",
-      "capturedAt": "2026-09-01T22:08:12.577Z",
+      "capturedAt": "2026-09-01T22:51:21.588Z",
       "source": "static",
-      "path": "/samples/craigslist.org/10fc2b61-016b-4ec3-8008-e2059eba331b.jpg"
-    },
-    {
-      "id": "f962506d-9114-4da7-a043-4c4f1a771520",
-      "url": "https://www.craigslist.org/search/area/sfbay?cat=sec",
-      "capturedAt": "2026-09-01T22:08:14.263Z",
-      "source": "static",
-      "path": "/samples/craigslist.org/f962506d-9114-4da7-a043-4c4f1a771520.jpg"
+      "path": "/samples/craigslist.org/e76cbf0d-e9fa-4bd3-8add-c9211cbc56f8.jpg"
     }
   ],
   "subdomains": {
@@ -423,16 +416,16 @@
   },
   "observedSoftware": [],
   "timings": {
-    "totalMs": 21746,
+    "totalMs": 12524,
     "engines": [
       {
         "engine": "B",
-        "elapsedMs": 17206,
+        "elapsedMs": 9382,
         "status": "ok"
       },
       {
         "engine": "A",
-        "elapsedMs": 21744,
+        "elapsedMs": 12522,
         "status": "ok"
       }
     ]

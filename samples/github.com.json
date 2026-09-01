@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "scanId": "d042b314-8da2-4672-acf5-62ac0d3d2539",
+  "scanId": "8d3bf45b-eb1c-4d97-b2df-8e8f370b6291",
   "domain": "github.com",
-  "scannedAt": "2026-09-01T22:07:23.623Z",
+  "scannedAt": "2026-09-01T22:52:16.781Z",
   "overallScore": 77.8,
   "assessedPoints": 90,
   "grade": "C",
@@ -381,46 +381,25 @@
   ],
   "screenshots": [
     {
-      "id": "3de4ed82-cff0-48c8-bd16-43e4af8058da",
+      "id": "70f067f3-de0d-4a3b-815b-3590624716b0",
       "url": "https://github.com/",
-      "capturedAt": "2026-09-01T22:06:59.837Z",
+      "capturedAt": "2026-09-01T22:52:03.741Z",
       "source": "static",
-      "path": "/samples/github.com/3de4ed82-cff0-48c8-bd16-43e4af8058da.jpg"
+      "path": "/samples/github.com/70f067f3-de0d-4a3b-815b-3590624716b0.jpg"
     },
     {
-      "id": "cc49f229-d122-4b74-a70b-78705b30dab5",
+      "id": "c25ee951-fcd3-4e10-8bcf-46c406d1d528",
       "url": "https://github.com/security",
-      "capturedAt": "2026-09-01T22:07:03.349Z",
+      "capturedAt": "2026-09-01T22:52:06.513Z",
       "source": "static",
-      "path": "/samples/github.com/cc49f229-d122-4b74-a70b-78705b30dab5.jpg"
+      "path": "/samples/github.com/c25ee951-fcd3-4e10-8bcf-46c406d1d528.jpg"
     },
     {
-      "id": "090fd04c-737c-418f-bac9-47bd6fc9257c",
+      "id": "3dc76b31-dd9a-42ce-9813-614c5d6eefc3",
       "url": "https://github.com/trust",
-      "capturedAt": "2026-09-01T22:07:05.503Z",
+      "capturedAt": "2026-09-01T22:52:08.031Z",
       "source": "static",
-      "path": "/samples/github.com/090fd04c-737c-418f-bac9-47bd6fc9257c.jpg"
-    },
-    {
-      "id": "d9a63eae-5ec3-4db0-9577-149a83b8504c",
-      "url": "https://github.com/privacy",
-      "capturedAt": "2026-09-01T22:07:07.828Z",
-      "source": "static",
-      "path": "/samples/github.com/d9a63eae-5ec3-4db0-9577-149a83b8504c.jpg"
-    },
-    {
-      "id": "45a43941-fb5a-4cdc-8836-c1289968e6bd",
-      "url": "https://github.com/.well-known/security.txt",
-      "capturedAt": "2026-09-01T22:07:10.678Z",
-      "source": "static",
-      "path": "/samples/github.com/45a43941-fb5a-4cdc-8836-c1289968e6bd.jpg"
-    },
-    {
-      "id": "c12c6cc6-4bf1-436a-93dd-656f5c722449",
-      "url": "https://github.com/security/advanced-security",
-      "capturedAt": "2026-09-01T22:07:21.144Z",
-      "source": "static",
-      "path": "/samples/github.com/c12c6cc6-4bf1-436a-93dd-656f5c722449.jpg"
+      "path": "/samples/github.com/3dc76b31-dd9a-42ce-9813-614c5d6eefc3.jpg"
     }
   ],
   "subdomains": {
@@ -482,16 +461,16 @@
     }
   ],
   "timings": {
-    "totalMs": 35979,
+    "totalMs": 26271,
     "engines": [
       {
         "engine": "B",
-        "elapsedMs": 31142,
+        "elapsedMs": 9029,
         "status": "ok"
       },
       {
         "engine": "A",
-        "elapsedMs": 35977,
+        "elapsedMs": 26268,
         "status": "ok"
       }
     ]

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "scanId": "41713236-c5ab-4746-90fb-4a69f0de37ae",
+  "scanId": "852a1dec-59ee-4d83-94ef-fd506635280f",
   "domain": "vercel.com",
-  "scannedAt": "2026-09-01T22:06:32.103Z",
-  "overallScore": 90,
+  "scannedAt": "2026-09-01T22:50:58.931Z",
+  "overallScore": 91.1,
   "assessedPoints": 90,
   "grade": "A",
   "categories": [
@@ -11,10 +11,10 @@
       "id": "governance",
       "label": "Governance and compliance",
       "weight": 25,
-      "pointsEarned": 24,
+      "pointsEarned": 25,
       "pointsAvailable": 25,
       "pointsNotAssessed": 0,
-      "score": 24,
+      "score": 25,
       "findings": [
         {
           "id": "governance.soc2",
@@ -127,10 +127,25 @@
         {
           "id": "governance.status_page",
           "label": "Status or uptime page published",
-          "status": "fail",
-          "observation": "No public page referencing this was found at the probed trust surfaces.",
+          "status": "pass",
+          "observation": "Found on https://status.vercel.com/.",
+          "pointsEarned": 1,
+          "pointsAvailable": 1,
+          "evidence": {
+            "url": "https://status.vercel.com/",
+            "raw": "https://status.vercel.com/ redirected off-site to www.vercel-status.com"
+          }
+        },
+        {
+          "id": "governance.offsite.1",
+          "label": "Trust surface redirected to another domain",
+          "status": "unverified",
+          "observation": "https://status.vercel.com/ redirected to www.vercel-status.com, which is outside the scan target, so the page content was not read and no governance signal was credited from it.",
           "pointsEarned": 0,
-          "pointsAvailable": 1
+          "pointsAvailable": 0,
+          "evidence": {
+            "url": "https://status.vercel.com/"
+          }
         }
       ]
     },
@@ -386,46 +401,25 @@
   ],
   "screenshots": [
     {
-      "id": "62f9f449-60e3-43da-8723-36be24999b16",
+      "id": "e455b923-66a7-4b9b-85f7-7647716feefd",
       "url": "https://vercel.com/",
-      "capturedAt": "2026-09-01T22:05:56.834Z",
+      "capturedAt": "2026-09-01T22:50:37.597Z",
       "source": "static",
-      "path": "/samples/vercel.com/62f9f449-60e3-43da-8723-36be24999b16.jpg"
+      "path": "/samples/vercel.com/e455b923-66a7-4b9b-85f7-7647716feefd.jpg"
     },
     {
-      "id": "9c8d0480-5a9e-4f5d-b7ab-277cd074580c",
+      "id": "b3066800-77ce-49e9-808c-819253c546f9",
       "url": "https://vercel.com/security",
-      "capturedAt": "2026-09-01T22:06:02.818Z",
+      "capturedAt": "2026-09-01T22:50:42.267Z",
       "source": "static",
-      "path": "/samples/vercel.com/9c8d0480-5a9e-4f5d-b7ab-277cd074580c.jpg"
+      "path": "/samples/vercel.com/b3066800-77ce-49e9-808c-819253c546f9.jpg"
     },
     {
-      "id": "2f80818d-f7c7-4f64-ac53-5558deffb1c5",
+      "id": "a5a38645-9206-4745-91e9-7392a78b364b",
       "url": "https://vercel.com/trust",
-      "capturedAt": "2026-09-01T22:06:06.237Z",
+      "capturedAt": "2026-09-01T22:50:45.833Z",
       "source": "static",
-      "path": "/samples/vercel.com/2f80818d-f7c7-4f64-ac53-5558deffb1c5.jpg"
-    },
-    {
-      "id": "8d9493f0-8af9-40e5-ab18-377d80ec9a39",
-      "url": "https://vercel.com/legal",
-      "capturedAt": "2026-09-01T22:06:10.753Z",
-      "source": "static",
-      "path": "/samples/vercel.com/8d9493f0-8af9-40e5-ab18-377d80ec9a39.jpg"
-    },
-    {
-      "id": "9744d17e-096a-47ba-b406-30748c59cd5b",
-      "url": "https://vercel.com/.well-known/security.txt",
-      "capturedAt": "2026-09-01T22:06:12.241Z",
-      "source": "static",
-      "path": "/samples/vercel.com/9744d17e-096a-47ba-b406-30748c59cd5b.jpg"
-    },
-    {
-      "id": "d3edccbe-93d5-4469-af45-67a805b68798",
-      "url": "https://vercel.com/security.txt",
-      "capturedAt": "2026-09-01T22:06:18.154Z",
-      "source": "static",
-      "path": "/samples/vercel.com/d3edccbe-93d5-4469-af45-67a805b68798.jpg"
+      "path": "/samples/vercel.com/a5a38645-9206-4745-91e9-7392a78b364b.jpg"
     }
   ],
   "subdomains": {
@@ -464,16 +458,16 @@
     }
   ],
   "timings": {
-    "totalMs": 42321,
+    "totalMs": 24733,
     "engines": [
       {
-        "engine": "B",
-        "elapsedMs": 9648,
+        "engine": "A",
+        "elapsedMs": 24655,
         "status": "ok"
       },
       {
-        "engine": "A",
-        "elapsedMs": 42319,
+        "engine": "B",
+        "elapsedMs": 24680,
         "status": "ok"
       }
     ]
