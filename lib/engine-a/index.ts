@@ -3,6 +3,7 @@ import {
   MAX_LINK_FOLLOW,
   MAX_INLINE_SCREENSHOTS,
   PAGE_TIMEOUT_MS,
+  PROBE_TIMEOUT_MS,
   userAgent,
 } from "@/lib/config";
 import { fetchRobots, type RobotsRules } from "@/lib/robots";
@@ -12,7 +13,15 @@ import { buildTargets, filterTargetsByRobots, isSameSite } from "./targets";
 import { detectSignals } from "./signals";
 import { withBrowser } from "@/lib/solari/browser";
 
-const THROTTLE_MS = 1_000;
+// Between navigations, on top of the seconds each navigation already takes, so
+// the effective request rate stays well under one page per second.
+const THROTTLE_MS = 300;
+
+/** Paths and hosts that frequently do not exist, so they get the short ceiling. */
+function isProbe(url: string): boolean {
+  const parsed = new URL(url);
+  return /^(trust|security)\./.test(parsed.hostname) || parsed.pathname.endsWith("security.txt");
+}
 
 const FOLLOW_KEYWORDS = /sub-?processor|status|uptime|trust|security/i;
 
@@ -28,9 +37,12 @@ export async function runEngineA(domain: string, scanId: string): Promise<Engine
   const robotsTimer = setTimeout(() => robotsController.abort(), 8_000);
   const rulesByHost = new Map<string, RobotsRules>();
   try {
-    for (const host of hosts) {
-      rulesByHost.set(host, await fetchRobots(host, robotsController.signal));
-    }
+    // Four independent GETs to four hosts. Sequentially they cost seconds of the
+    // scan budget for no reason; nothing here depends on the previous answer.
+    const fetched = await Promise.all(
+      hosts.map(async (host) => [host, await fetchRobots(host, robotsController.signal)] as const),
+    );
+    for (const [host, rules] of fetched) rulesByHost.set(host, rules);
   } finally {
     clearTimeout(robotsTimer);
   }
@@ -60,14 +72,15 @@ export async function runEngineA(domain: string, scanId: string): Promise<Engine
       seen.add(url);
       await delay(THROTTLE_MS);
 
+      const pageStartedAt = Date.now();
       try {
         const response = await page.goto(url, {
           waitUntil: "domcontentloaded",
-          timeout: PAGE_TIMEOUT_MS,
+          timeout: isProbe(url) ? PROBE_TIMEOUT_MS : PAGE_TIMEOUT_MS,
         });
         const httpStatus: number | undefined = response?.status();
         if (!httpStatus || httpStatus >= 400) {
-          pages.push({ url, status: "not_found", httpStatus });
+          pages.push({ url, status: "not_found", httpStatus, elapsedMs: Date.now() - pageStartedAt });
           continue;
         }
 
@@ -90,6 +103,7 @@ export async function runEngineA(domain: string, scanId: string): Promise<Engine
             status: "redirected_offsite",
             httpStatus,
             redirectedTo: landedHost,
+            elapsedMs: Date.now() - pageStartedAt,
           });
           continue;
         }
@@ -126,6 +140,7 @@ export async function runEngineA(domain: string, scanId: string): Promise<Engine
           title,
           textLength: text.length,
           screenshotId,
+          elapsedMs: Date.now() - pageStartedAt,
         });
 
         if (followsRemaining > 0) {
@@ -162,6 +177,7 @@ export async function runEngineA(domain: string, scanId: string): Promise<Engine
           url,
           status: "error",
           error: error instanceof Error ? error.message : String(error),
+          elapsedMs: Date.now() - pageStartedAt,
         });
       }
     }

@@ -73,6 +73,8 @@ export interface PageVisit {
   textLength?: number;
   /** Host the request landed on when a redirect left the scan target. */
   redirectedTo?: string;
+  /** Wall clock spent on this page, so a slow surface can be found and capped. */
+  elapsedMs?: number;
   error?: string;
 }
 
