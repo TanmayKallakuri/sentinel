@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { buildTargets, filterTargetsByRobots } from "@/lib/engine-a/targets";
+import { buildTargets, filterTargetsByRobots, isSameSite } from "@/lib/engine-a/targets";
 import { parseRobots } from "@/lib/robots";
 import { MAX_TRUST_PAGES } from "@/lib/config";
 
@@ -90,5 +90,32 @@ describe("filterTargetsByRobots", () => {
   it("allows a host with no rules on record", () => {
     const filtered = filterTargetsByRobots(["https://acme.com/legal"], new Map());
     expect(filtered).toEqual([{ url: "https://acme.com/legal", allowed: true }]);
+  });
+});
+
+describe("isSameSite", () => {
+  // Flagged by security review: a bare endsWith accepts notacme.com while
+  // scanning acme.com. Anyone can register that, which would send a cloud
+  // browser off target and let a third party's page supply governance evidence
+  // credited to the vendor.
+  it.each(["acme.com", "www.acme.com", "trust.acme.com", "a.b.acme.com", "ACME.com", "acme.com."])(
+    "accepts %s as in scope for acme.com",
+    (host) => expect(isSameSite(host, "acme.com")).toBe(true),
+  );
+
+  it.each([
+    "notacme.com",
+    "evilacme.com",
+    "acme.com.evil.net",
+    "acme.co",
+    "xacme.com",
+    "acme.community",
+  ])("rejects %s as out of scope for acme.com", (host) => {
+    expect(isSameSite(host, "acme.com")).toBe(false);
+  });
+
+  it("is not fooled by a trailing dot on either side", () => {
+    expect(isSameSite("trust.acme.com.", "acme.com")).toBe(true);
+    expect(isSameSite("notacme.com.", "acme.com")).toBe(false);
   });
 });

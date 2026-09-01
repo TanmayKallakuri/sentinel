@@ -23,6 +23,19 @@ export function buildTargets(domain: string): string[] {
   return [...new Set(urls)].slice(0, budget);
 }
 
+/**
+ * A followed link is in scope only when its host is the target domain itself or
+ * a subdomain of it. A bare endsWith would accept notacme.com while scanning
+ * acme.com, which anyone can register: that would send a cloud browser to a
+ * domain the user never asked about, and let a third party's page supply
+ * governance evidence attributed to the vendor.
+ */
+export function isSameSite(hostname: string, domain: string): boolean {
+  const host = hostname.toLowerCase().replace(/\.$/, "");
+  const root = domain.toLowerCase().replace(/\.$/, "");
+  return host === root || host.endsWith(`.${root}`);
+}
+
 export function filterTargetsByRobots(
   targets: string[],
   rulesByHost: Map<string, RobotsRules>,

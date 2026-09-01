@@ -8,7 +8,7 @@ import {
 import { fetchRobots, type RobotsRules } from "@/lib/robots";
 import { persistForDev, toScreenshot } from "@/lib/screenshots";
 import type { EngineAResult, PageVisit, Screenshot } from "@/lib/types";
-import { buildTargets, filterTargetsByRobots } from "./targets";
+import { buildTargets, filterTargetsByRobots, isSameSite } from "./targets";
 import { detectSignals } from "./signals";
 import { withBrowser } from "@/lib/solari/browser";
 
@@ -124,7 +124,7 @@ export async function runEngineA(domain: string, scanId: string): Promise<Engine
               continue;
             }
             if (candidate.protocol !== "https:") continue;
-            if (!candidate.hostname.endsWith(domain)) continue;
+            if (!isSameSite(candidate.hostname, domain)) continue;
             if (seen.has(candidate.toString()) || queue.includes(candidate.toString())) continue;
             if (!filterTargetsByRobots([candidate.toString()], rulesByHost)[0]?.allowed) continue;
             queue.push(candidate.toString());
