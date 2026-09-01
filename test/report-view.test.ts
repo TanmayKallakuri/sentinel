@@ -148,20 +148,6 @@ describe("ReportView", () => {
     expect(markup).not.toContain("Trust surface evidence");
   });
 
-  it("names the model on the summary so it cannot be read as a measured finding", () => {
-    expect(html).not.toContain("Executive summary");
-
-    const narrated: Report = {
-      ...report,
-      executiveSummary: { text: "A neutral summary.", model: "claude-sonnet-4-6", generated: true },
-    };
-    const markup = renderToStaticMarkup(createElement(ReportView, { report: narrated }));
-    expect(markup).toContain("Executive summary");
-    expect(markup).toContain("Generated narrative from claude-sonnet-4-6");
-    expect(markup).toContain("The score does not depend on it");
-    expect(markup).toContain("A neutral summary.");
-  });
-
   it("renders a Certificate Transparency outage as unavailable rather than as zero names", () => {
     const offline: Report = {
       ...report,

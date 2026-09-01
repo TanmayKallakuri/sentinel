@@ -4,7 +4,6 @@ import { runEngineA } from "@/lib/engine-a";
 import { runEngineB } from "@/lib/engine-b";
 import { assessedPoints, buildCategories, overallScore } from "@/lib/scoring/evaluate";
 import { gradeFor } from "@/lib/scoring/scoring";
-import { maybeSummarize } from "@/lib/summary";
 import type { EngineAResult, EngineBResult, EngineTiming, Report } from "@/lib/types";
 
 export interface AssembleInput {
@@ -109,7 +108,5 @@ export async function runScan(rawDomain: string): Promise<Report> {
     timed("B", () => runEngineB(domain)),
   ]);
 
-  // Scoring is finished and pure before the summary is attached, so the
-  // narrative can only ever be added to a report, never change one.
-  return maybeSummarize(assembleReport({ domain, scanId, startedAt, a, b, timings }));
+  return assembleReport({ domain, scanId, startedAt, a, b, timings });
 }
