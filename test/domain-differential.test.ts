@@ -1,46 +1,41 @@
 import { describe, it, expect } from "vitest";
 import { execFileSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { normalizeDomain } from "@/lib/domain";
 
 // The cookbook example at examples/sentinel duplicates this validator on
 // purpose: the two artifacts share no code, by project decision. Duplication
-// only stays honest if something keeps checking that the copies still agree,
-// so this drives both implementations from one input list and fails on any
-// divergence. Task 17 copies the logic a third time and should rerun this.
+// only stays honest if something keeps checking that the copies still agree, so
+// this drives both implementations from one shared input file and fails on any
+// divergence.
 //
-// It shells out once per input, which costs about ten seconds. It runs whenever
-// the cookbook example is installed beside this repo and skips cleanly when it
-// is not, so a fresh clone of this repo alone still has a green suite. Point it
-// elsewhere with SENTINEL_FORK_PATH.
+// Both sides read test/fixtures/differential-inputs.txt, and the fork side runs
+// in a single spawned process rather than one per input. The per input version
+// spawned a Node process for every case and starved past its timeout under CPU
+// contention, which is a flake that says nothing about the code under test.
 const FORK = process.env.SENTINEL_FORK_PATH
-  ?? path.resolve(process.cwd(), "..", "solari-cookbook", "examples", "sentinel");
+  ?? path.resolve(import.meta.dirname, "..", "..", "solari-cookbook", "examples", "sentinel");
+const FORK_INDEX = path.join(FORK, "index.ts");
 const TSX = path.join(FORK, "node_modules", "tsx", "dist", "cli.mjs");
+const DRIVER = path.join(import.meta.dirname, "differential-driver.mts");
+const INPUTS = path.join(import.meta.dirname, "fixtures", "differential-inputs.txt");
 
-const INPUTS = [
-  "acme.com", "ACME.com", "https://acme.com/security",
-  "http://www.acme.com:8443/a/b?c=d", "sub.domain.acme.co.uk", "a-b.acme.com",
-  "acme.com.", "192.168.1.1", "127.0.0.1", "8.8.8.8", "-acme.com", "acme-.com",
-  "acme..com", "acme", "localhost", "printer.local", "thing.internal", "acme.c",
-  "acme.123", "not a domain", "münchen.de", "https://münchen.de",
-  "xn--mnchen-3ya.de", "acme.com?x=1", "https://acme.com?x=1", "acme.com#f",
-  "ftp://acme.com", "user:pass@acme.com", "http://[::1]/", "//acme.com",
-];
+function inputs(): string[] {
+  return readFileSync(INPUTS, "utf8")
+    .split(/\r?\n/)
+    .filter((line) => line.length > 0 && !line.startsWith("#"));
+}
 
-function forkVerdict(input: string): string {
-  try {
-    const stdout = execFileSync(process.execPath, [TSX, "index.ts", input], {
-      cwd: FORK,
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    const match = /"domain":\s*"([^"]*)"/.exec(stdout);
-    return match?.[1] ? `accept ${match[1]}` : "reject";
-  } catch {
-    // A non zero exit is the example's refusal path, not a harness failure.
-    return "reject";
-  }
+function forkVerdicts(): Map<string, string> {
+  const stdout = execFileSync(process.execPath, [TSX, DRIVER, FORK_INDEX, INPUTS], {
+    cwd: FORK,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+    maxBuffer: 8 * 1024 * 1024,
+  });
+  const parsed: { input: string; verdict: string }[] = JSON.parse(stdout.trim().split(/\r?\n/).at(-1) ?? "[]");
+  return new Map(parsed.map((row) => [row.input, row.verdict]));
 }
 
 function appVerdict(input: string): string {
@@ -48,12 +43,20 @@ function appVerdict(input: string): string {
   return result.ok ? `accept ${result.domain}` : "reject";
 }
 
-const runnable = existsSync(TSX);
+const runnable = existsSync(TSX) && existsSync(FORK_INDEX);
 
 describe.skipIf(!runnable)("fork and app validators agree", () => {
-  it.each(INPUTS)("agrees on %s", (input) => {
-    expect({ input, verdict: forkVerdict(input) }).toEqual({ input, verdict: appVerdict(input) });
-  }, 30_000);
+  const fork = runnable ? forkVerdicts() : new Map<string, string>();
+  const cases = inputs();
+
+  it("evaluated every shared input", () => {
+    expect(fork.size).toBe(cases.length);
+    expect(cases.length).toBeGreaterThanOrEqual(30);
+  });
+
+  it.each(inputs())("agrees on %s", (input) => {
+    expect({ input, verdict: fork.get(input) }).toEqual({ input, verdict: appVerdict(input) });
+  });
 });
 
 describe.runIf(!runnable)("differential harness", () => {

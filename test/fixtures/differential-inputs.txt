@@ -1,0 +1,36 @@
+# Shared input list for the fork/app domain validator differential.
+# Both implementations read this same file, so neither side can drift onto its
+# own list. Blank lines and lines starting with # are ignored.
+acme.com
+ACME.com
+https://acme.com/security
+http://www.acme.com:8443/a/b?c=d
+sub.domain.acme.co.uk
+a-b.acme.com
+acme.com.
+192.168.1.1
+127.0.0.1
+8.8.8.8
+10.0.0.5
+-acme.com
+acme-.com
+acme..com
+acme
+localhost
+printer.local
+thing.internal
+acme.c
+acme.123
+not a domain
+user:pass@acme.com
+münchen.de
+https://münchen.de
+xn--mnchen-3ya.de
+acme.com?x=1
+https://acme.com?x=1
+acme.com#f
+ftp://acme.com
+http://[::1]/
+//acme.com
+acme.com/@handle
+http://https://acme.com
