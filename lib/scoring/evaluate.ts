@@ -97,7 +97,7 @@ function transport(b: EngineBResult): CategoryScore {
       tls.tls12Supported ? "TLS 1.2 handshake succeeded." : "TLS 1.2 handshake did not succeed."),
     finding("transport.legacy", "Legacy TLS 1.0 and 1.1 support", 0, 0,
       tls.legacyProtocolsTestable
-        ? "The scanner's OpenSSL build can test legacy protocols; results are informational only."
+        ? "The scanner's OpenSSL build cannot test legacy protocols; their status was not assessed."
         : "The scanner's OpenSSL build cannot negotiate TLS 1.0 or 1.1, so their status was not assessed."),
   ]);
 }
