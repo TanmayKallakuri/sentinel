@@ -162,7 +162,7 @@
           "id": "transport.legacy",
           "label": "Legacy TLS 1.0 and 1.1 support",
           "status": "unavailable",
-          "observation": "The scanner's OpenSSL build can test legacy protocols; results are informational only.",
+          "observation": "The scanner's OpenSSL build cannot test legacy protocols; their status was not assessed.",
           "pointsEarned": 0,
           "pointsAvailable": 0
         }
