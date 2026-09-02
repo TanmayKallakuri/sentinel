@@ -37,7 +37,6 @@ export default async function Home() {
         <ScanForm enabled={liveScansEnabled()} />
         <p className="form-note">
           Sentinel never logs in, never probes, and never sends anything a normal reader would not.
-          One cloud browser session and one sandbox per scan.
         </p>
       </section>
       <section className="section">

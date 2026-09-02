@@ -98,14 +98,14 @@ export function ScanForm({ enabled }: { enabled: boolean }) {
       </form>
       {state === "idle" ? (
         <p className="form-note">
-          One cloud browser session and one sandbox per scan. A scan takes about a minute.
+          One cloud browser session and one sandbox per scan. Measured scans take nine to thirty seconds.
         </p>
       ) : null}
       <div aria-live="polite">
         {state === "running" ? (
           <p className="form-note">
             Driving a cloud browser across the public trust surface and running passive checks in a
-            sandbox. This takes about a minute.
+            sandbox. This usually takes under thirty seconds.
           </p>
         ) : null}
         {error ? (
