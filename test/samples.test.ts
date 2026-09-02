@@ -52,6 +52,19 @@ describe("bundled samples", () => {
     }
   });
 
+  // Every name is public in the logs, but an alphabetised list of a named
+  // company's hosts, indexed under a graded security banner, is an aggregation
+  // the source logs do not offer. A live scan lists them; a published sample
+  // carries the count only. A recapture must not quietly put them back.
+  it.each(files)("%s publishes a Certificate Transparency count but no names", (file) => {
+    const { subdomains } = load(file);
+    expect(subdomains.sample).toEqual([]);
+    if (subdomains.status === "info") {
+      expect(subdomains.total).toBeGreaterThan(0);
+      expect(subdomains.source).toBeTruthy();
+    }
+  });
+
   it.each(files)("%s references only committed static screenshots", (file) => {
     for (const shot of load(file).screenshots) {
       expect(shot.source).toBe("static");

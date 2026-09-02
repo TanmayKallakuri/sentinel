@@ -25,7 +25,7 @@
           "pointsAvailable": 4,
           "evidence": {
             "url": "https://github.com/security",
-            "excerpt": "workflow. Read about platform security GitHub’s API stays secure with ISO, SOC 2, and GDPR. Visit the Trust Center Join the companies that secure their code"
+            "excerpt": "workflow. Read about platform security GitHub\u2019s API stays secure with ISO, SOC 2, and GDPR. Visit the Trust Center Join the companies that secure their code"
           }
         },
         {
@@ -53,7 +53,7 @@
           "pointsAvailable": 2,
           "evidence": {
             "url": "https://github.com/security",
-            "excerpt": "Read about platform security GitHub’s API stays secure with ISO, SOC 2, and GDPR. Visit the Trust Center Join the companies that secure their code with GitH"
+            "excerpt": "Read about platform security GitHub\u2019s API stays secure with ISO, SOC 2, and GDPR. Visit the Trust Center Join the companies that secure their code with GitH"
           }
         },
         {
@@ -410,51 +410,7 @@
     "status": "info",
     "source": "certspotter",
     "total": 43,
-    "sample": [
-      "api.mcp.github.com",
-      "api.security.github.com",
-      "asset-generator.github.com",
-      "awesome-copilot.github.com",
-      "bug-bash.github.com",
-      "classroom.github.com",
-      "communication.github.com",
-      "copilot-billing-preview.github.com",
-      "copilot-reports.github.com",
-      "design-camp.github.com",
-      "dev-days.github.com",
-      "dev.gtm.github.com",
-      "ducky.github.com",
-      "emails.github.com",
-      "examadmin-uat.github.com",
-      "examadmin.github.com",
-      "examregistration-api.github.com",
-      "examregistration-uat-api.github.com",
-      "f.cloud.github.com",
-      "gameoff.github.com",
-      "garage.github.com",
-      "ghicons.github.com",
-      "gist.github.com",
-      "github.com",
-      "gsnlink.github.com",
-      "livesend.github.com",
-      "m.communication.github.com",
-      "mailing.github.com",
-      "model-launchkit.github.com",
-      "octocaptcha.review-lab.github.com",
-      "pkg.github.com",
-      "proxima-review-lab.github.com",
-      "registry.github.com",
-      "res.communication.github.com",
-      "review-lab.github.com",
-      "smtp.github.com",
-      "spotlights-feed.github.com",
-      "support.enterprise.github.com",
-      "t.communication.github.com",
-      "vpn-ca.iad.github.com",
-      "ws.help.github.com",
-      "ws.support.github.com",
-      "www.github.com"
-    ]
+    "sample": []
   },
   "observedSoftware": [
     {

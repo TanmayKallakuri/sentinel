@@ -140,6 +140,15 @@ export function ReportView({ report }: { report: Report }) {
             <p className="mono muted evidence">{ct.sample.join(", ")}</p>
           </>
         ) : null}
+        {ct.total > 0 && ct.sample.length === 0 ? (
+          // A published sample carries the count but not the names. Every name
+          // is public in the logs, but an alphabetised list of a named
+          // company's hosts, indexed under a graded security banner, is an
+          // aggregation the source logs do not offer. A live scan shows them.
+          <p className="muted sub-note">
+            The names are listed in a live scan. Published samples carry the count only.
+          </p>
+        ) : null}
         <h3 className="section-head sub-head">Software observed</h3>
         <SoftwareList software={report.observedSoftware} />
       </section>

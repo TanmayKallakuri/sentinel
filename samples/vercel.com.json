@@ -426,28 +426,7 @@
     "status": "info",
     "source": "certspotter",
     "total": 20,
-    "sample": [
-      "admin.vercel.com",
-      "assets.vercel.com",
-      "auth.vercel.com",
-      "cdn1.vercel.com",
-      "cdn2.vercel.com",
-      "checkout.vercel.com",
-      "customerio.vercel.com",
-      "datarequest.vercel.com",
-      "email.info.vercel.com",
-      "examples.vercel.com",
-      "go.vercel.com",
-      "image.ship.vercel.com",
-      "kms.vercel.com",
-      "partners-classic.vercel.com",
-      "pcosti.vercel.com",
-      "ri2.vercel.com",
-      "saml-authentication.vercel.com",
-      "security.vercel.com",
-      "upflow-email.billing.vercel.com",
-      "vercel.com"
-    ]
+    "sample": []
   },
   "observedSoftware": [
     {

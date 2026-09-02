@@ -46,3 +46,8 @@ next-env.d.ts
 reports/
 
 .vercel
+
+# Agent tooling files, regenerated locally by next dev
+AGENTS.md
+CLAUDE.md
+PLAN.md

@@ -88,7 +88,7 @@ Worth reading before you rely on a number.
 - **Certificate Transparency is best-effort.** crt.sh is the primary source with Cert Spotter as a fallback; Cert Spotter paginates at 100 issuances, so on a large domain its total is a floor. If both fail the report says so and claims no number.
 - **A perfect 100 is unreachable by construction.** A CVE lookup requires a disclosed version, and disclosing a version forfeits the version-hygiene points. The reachable ceilings are 90 of 90 and 95 of 100.
 - **The rate limit is per instance, in memory.** It is a demo guardrail against burning credits, not a security control.
-- **A probed path is not always the vendor's page.** On platforms with user namespaces, `/trust` can be somebody's profile rather than a trust centre. Sentinel screenshots only pages that produced a governance signal, so an unrelated page is not filed as evidence, but the probe list is fixed and cannot know a given path's meaning on a given host.
+- **On a host that serves user content, a probe path may resolve to a user-authored page.** Platforms host user content under the vendor's own domain, so `/trust` or `/security` can be somebody's profile or repository rather than anything the vendor wrote. Sentinel cannot distinguish vendor-authored from user-authored content on the same host. It screenshots only pages that produced a governance signal, which keeps an unrelated page from being filed as evidence, but the probe list is fixed and cannot know what a given path means on a given host.
 - **One run is one moment.** Nothing here is monitoring.
 
 ## Run it
