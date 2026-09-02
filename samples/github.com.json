@@ -1,20 +1,20 @@
 {
   "schemaVersion": 1,
-  "scanId": "8d3bf45b-eb1c-4d97-b2df-8e8f370b6291",
+  "scanId": "a334033c-6290-49a2-be78-aa7042cef010",
   "domain": "github.com",
-  "scannedAt": "2026-09-01T22:52:16.781Z",
-  "overallScore": 77.8,
+  "scannedAt": "2026-09-02T01:11:31.088Z",
+  "overallScore": 81.1,
   "assessedPoints": 90,
-  "grade": "C",
+  "grade": "B",
   "categories": [
     {
       "id": "governance",
       "label": "Governance and compliance",
       "weight": 25,
-      "pointsEarned": 13,
+      "pointsEarned": 16,
       "pointsAvailable": 25,
       "pointsNotAssessed": 0,
-      "score": 13,
+      "score": 16,
       "findings": [
         {
           "id": "governance.soc2",
@@ -99,10 +99,14 @@
         {
           "id": "governance.security_contact",
           "label": "Security contact published",
-          "status": "fail",
-          "observation": "No public page referencing this was found at the probed trust surfaces.",
-          "pointsEarned": 0,
-          "pointsAvailable": 3
+          "status": "pass",
+          "observation": "Found on https://github.com/.well-known/security.txt.",
+          "pointsEarned": 3,
+          "pointsAvailable": 3,
+          "evidence": {
+            "url": "https://github.com/.well-known/security.txt",
+            "excerpt": "https://github.com/.well-known/security.txt Contact: https://hackerone.com/github Acknowledgments: https://hackerone.com/github/hacktivity Preferred-Languages: e"
+          }
         },
         {
           "id": "governance.status_page",
@@ -153,7 +157,7 @@
           "id": "transport.notExpired",
           "label": "Certificate is within its validity window",
           "status": "pass",
-          "observation": "Certificate notAfter is Nov 29 23:59:59 2026 GMT, 89 days from the scan.",
+          "observation": "Certificate notAfter is Nov 29 23:59:59 2026 GMT, 88 days from the scan.",
           "pointsEarned": 5,
           "pointsAvailable": 5
         },
@@ -161,7 +165,7 @@
           "id": "transport.renewalHeadroom",
           "label": "At least 30 days before expiry",
           "status": "pass",
-          "observation": "89 days of validity remain.",
+          "observation": "88 days of validity remain.",
           "pointsEarned": 3,
           "pointsAvailable": 3
         },
@@ -381,25 +385,25 @@
   ],
   "screenshots": [
     {
-      "id": "70f067f3-de0d-4a3b-815b-3590624716b0",
+      "id": "88a2a819-7a32-4953-8528-131c5d9ebf93",
       "url": "https://github.com/",
-      "capturedAt": "2026-09-01T22:52:03.741Z",
+      "capturedAt": "2026-09-02T01:11:18.681Z",
       "source": "static",
-      "path": "/samples/github.com/70f067f3-de0d-4a3b-815b-3590624716b0.jpg"
+      "path": "/samples/github.com/88a2a819-7a32-4953-8528-131c5d9ebf93.jpg"
     },
     {
-      "id": "c25ee951-fcd3-4e10-8bcf-46c406d1d528",
+      "id": "d9e2b3d9-f353-486f-829c-0833a5f637b4",
       "url": "https://github.com/security",
-      "capturedAt": "2026-09-01T22:52:06.513Z",
+      "capturedAt": "2026-09-02T01:11:21.156Z",
       "source": "static",
-      "path": "/samples/github.com/c25ee951-fcd3-4e10-8bcf-46c406d1d528.jpg"
+      "path": "/samples/github.com/d9e2b3d9-f353-486f-829c-0833a5f637b4.jpg"
     },
     {
-      "id": "3dc76b31-dd9a-42ce-9813-614c5d6eefc3",
-      "url": "https://github.com/trust",
-      "capturedAt": "2026-09-01T22:52:08.031Z",
+      "id": "255857d6-4c18-4b17-a0a6-cb0dc8afac2a",
+      "url": "https://github.com/.well-known/security.txt",
+      "capturedAt": "2026-09-02T01:11:25.174Z",
       "source": "static",
-      "path": "/samples/github.com/3dc76b31-dd9a-42ce-9813-614c5d6eefc3.jpg"
+      "path": "/samples/github.com/255857d6-4c18-4b17-a0a6-cb0dc8afac2a.jpg"
     }
   ],
   "subdomains": {
@@ -461,16 +465,16 @@
     }
   ],
   "timings": {
-    "totalMs": 26271,
+    "totalMs": 26261,
     "engines": [
       {
         "engine": "B",
-        "elapsedMs": 9029,
+        "elapsedMs": 24162,
         "status": "ok"
       },
       {
         "engine": "A",
-        "elapsedMs": 26268,
+        "elapsedMs": 26260,
         "status": "ok"
       }
     ]

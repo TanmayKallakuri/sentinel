@@ -117,8 +117,16 @@ export async function runEngineA(domain: string, scanId: string): Promise<Engine
         );
         collected.push({ url, text });
 
+        // Screenshot only pages that actually produced evidence, plus the root.
+        // A probed path is not always the vendor's page: github.com/trust is a
+        // user profile, because /trust is a user namespace on that platform, and
+        // capturing it published an uninvolved person's avatar, name and
+        // follower count inside a security report about GitHub. Evidence
+        // screenshots should be of pages that are evidence.
+        const isRoot = new URL(url).pathname === "/";
+        const contributed = detectSignals([{ url, text }]).some((signal) => signal.found);
         let screenshotId: string | undefined;
-        if (screenshots.length < MAX_INLINE_SCREENSHOTS) {
+        if ((isRoot || contributed) && screenshots.length < MAX_INLINE_SCREENSHOTS) {
           const buffer: Buffer = await page.screenshot({
             fullPage: true,
             type: "jpeg",

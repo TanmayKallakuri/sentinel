@@ -1,6 +1,6 @@
 # Sentinel
 
-Type a vendor's domain. Get back an evidence-backed read of the security posture they publish in public, with a screenshot of every page it was drawn from.
+Type a vendor's domain. Get back an evidence-backed read of the security posture they publish in public, with screenshots of the pages it was drawn from.
 
 Vendor security review usually starts with a questionnaire and ends three weeks later. Sentinel answers a narrower question in under thirty seconds: **what does this company actually say about its security, and what does its public infrastructure look like from the outside?** That is not the whole review, but it is the part you can check before you book the call.
 
@@ -24,7 +24,7 @@ The two halves need different machines, so Sentinel runs both at once on [Solari
 
 ```
 domain
-  ├── Engine A  cloud browser   reads the trust surface, screenshots each page
+  ├── Engine A  cloud browser   reads the trust surface, screenshots the evidence
   └── Engine B  cloud sandbox   TLS, headers, email auth, DNS, CT, software
                     ↓
               scoring (deterministic)
@@ -69,11 +69,11 @@ From the three bundled samples, each a full scan of both engines against a live 
 
 | Target | Grade | Score | Assessed | Browser pass | Sandbox pass | Total |
 | --- | --- | --- | --- | --- | --- | --- |
-| vercel.com | A | 91.1 | 90 of 100 | 24.7s | 24.7s | 24.7s |
-| github.com | C | 77.8 | 90 of 100 | 26.3s | 9.0s | 26.3s |
-| craigslist.org | D | 58.9 | 90 of 100 | 12.5s | 9.4s | 12.5s |
+| vercel.com | A | 91.1 | 90 of 100 | 28.2s | 17.2s | 28.2s |
+| github.com | B | 81.1 | 90 of 100 | 26.3s | 24.2s | 26.3s |
+| craigslist.org | D | 58.9 | 90 of 100 | 8.7s | 9.1s | 9.1s |
 
-The engines run concurrently, so the total is the slower half rather than the sum. The browser pass dominates: it visits up to twelve pages and screenshots three of them.
+The engines run concurrently, so the total is the slower half rather than the sum. The browser pass usually dominates: it visits up to twelve pages, and screenshots at most three of them, only the ones that produced evidence.
 
 An earlier build took forty-seven seconds. Profiling per page found full-page screenshots costing about four seconds each, a flat one-second throttle stacked on navigations that already took seconds, and four `robots.txt` fetches running in sequence for no reason.
 
@@ -88,6 +88,7 @@ Worth reading before you rely on a number.
 - **Certificate Transparency is best-effort.** crt.sh is the primary source with Cert Spotter as a fallback; Cert Spotter paginates at 100 issuances, so on a large domain its total is a floor. If both fail the report says so and claims no number.
 - **A perfect 100 is unreachable by construction.** A CVE lookup requires a disclosed version, and disclosing a version forfeits the version-hygiene points. The reachable ceilings are 90 of 90 and 95 of 100.
 - **The rate limit is per instance, in memory.** It is a demo guardrail against burning credits, not a security control.
+- **A probed path is not always the vendor's page.** On platforms with user namespaces, `/trust` can be somebody's profile rather than a trust centre. Sentinel screenshots only pages that produced a governance signal, so an unrelated page is not filed as evidence, but the probe list is fixed and cannot know a given path's meaning on a given host.
 - **One run is one moment.** Nothing here is monitoring.
 
 ## Run it

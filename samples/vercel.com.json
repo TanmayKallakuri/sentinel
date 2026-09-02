@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "scanId": "852a1dec-59ee-4d83-94ef-fd506635280f",
+  "scanId": "40db82a2-95f0-40d5-8632-5fa323390083",
   "domain": "vercel.com",
-  "scannedAt": "2026-09-01T22:50:58.931Z",
+  "scannedAt": "2026-09-02T01:11:00.790Z",
   "overallScore": 91.1,
   "assessedPoints": 90,
   "grade": "A",
@@ -68,12 +68,12 @@
           "id": "governance.dpa",
           "label": "Data processing agreement referenced",
           "status": "pass",
-          "observation": "Found on https://vercel.com/legal.",
+          "observation": "Found on https://vercel.com/privacy.",
           "pointsEarned": 2,
           "pointsAvailable": 2,
           "evidence": {
-            "url": "https://vercel.com/legal",
-            "excerpt": ", 2025 Read Document Cookie Policy Last Updated April 21, 2020 Read Document Data Processing Addendum Last Updated March 17, 2026 Read Document Data Processing Agreement (Sitecore"
+            "url": "https://vercel.com/privacy",
+            "excerpt": "rmation at the direction of our Customer as their data processor subject to our Data Processing Addendum. In those circumstances, the Customer operates as the data controller and their"
           }
         },
         {
@@ -121,7 +121,7 @@
           "pointsAvailable": 3,
           "evidence": {
             "url": "https://vercel.com/.well-known/security.txt",
-            "excerpt": ".com/.well-known/security.txt Contact: https://hackerone.com/vercel-open-source Contact: mailto:responsible.disclosure@vercel.com Expires: 2027-05-27T12:00:00.000Z Preferred-La"
+            "excerpt": "https://vercel.com/.well-known/security.txt Contact: https://hackerone.com/vercel-open-source Contact: mailto:responsible.disclosure@vercel.com Expires: 2027-05-27T12:00:00."
           }
         },
         {
@@ -401,25 +401,25 @@
   ],
   "screenshots": [
     {
-      "id": "e455b923-66a7-4b9b-85f7-7647716feefd",
+      "id": "d5927575-2551-47c3-8dd4-93ebe3a9cb8f",
       "url": "https://vercel.com/",
-      "capturedAt": "2026-09-01T22:50:37.597Z",
+      "capturedAt": "2026-09-02T01:10:35.908Z",
       "source": "static",
-      "path": "/samples/vercel.com/e455b923-66a7-4b9b-85f7-7647716feefd.jpg"
+      "path": "/samples/vercel.com/d5927575-2551-47c3-8dd4-93ebe3a9cb8f.jpg"
     },
     {
-      "id": "b3066800-77ce-49e9-808c-819253c546f9",
+      "id": "05775913-ab98-475a-bb0d-68661daaf8c6",
       "url": "https://vercel.com/security",
-      "capturedAt": "2026-09-01T22:50:42.267Z",
+      "capturedAt": "2026-09-02T01:10:41.961Z",
       "source": "static",
-      "path": "/samples/vercel.com/b3066800-77ce-49e9-808c-819253c546f9.jpg"
+      "path": "/samples/vercel.com/05775913-ab98-475a-bb0d-68661daaf8c6.jpg"
     },
     {
-      "id": "a5a38645-9206-4745-91e9-7392a78b364b",
-      "url": "https://vercel.com/trust",
-      "capturedAt": "2026-09-01T22:50:45.833Z",
+      "id": "47fa446e-d206-4f10-bf17-15e819a236be",
+      "url": "https://vercel.com/legal",
+      "capturedAt": "2026-09-02T01:10:50.845Z",
       "source": "static",
-      "path": "/samples/vercel.com/a5a38645-9206-4745-91e9-7392a78b364b.jpg"
+      "path": "/samples/vercel.com/47fa446e-d206-4f10-bf17-15e819a236be.jpg"
     }
   ],
   "subdomains": {
@@ -458,16 +458,16 @@
     }
   ],
   "timings": {
-    "totalMs": 24733,
+    "totalMs": 28162,
     "engines": [
       {
-        "engine": "A",
-        "elapsedMs": 24655,
+        "engine": "B",
+        "elapsedMs": 17185,
         "status": "ok"
       },
       {
-        "engine": "B",
-        "elapsedMs": 24680,
+        "engine": "A",
+        "elapsedMs": 28161,
         "status": "ok"
       }
     ]

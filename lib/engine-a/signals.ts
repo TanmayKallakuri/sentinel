@@ -60,7 +60,14 @@ export const SIGNALS: SignalPattern[] = [
   {
     id: "security_contact",
     label: "Security contact published",
-    patterns: [/security@[a-z0-9.-]+\.[a-z]{2,}/i, /^Contact:\s*mailto:/im],
+    // RFC 9116 requires the security.txt Contact field to be a URI, and says
+    // nothing about it being mailto. GitHub publishes a HackerOne URL. Accepting
+    // only mailto reported a named company as having no security contact while
+    // the report quoted that very Contact line as evidence two findings above.
+    patterns: [
+      /security@[a-z0-9.-]+\.[a-z]{2,}/i,
+      /^Contact:\s*(?:https?:\/\/|mailto:|tel:)\S+/im,
+    ],
   },
   {
     id: "status_page",

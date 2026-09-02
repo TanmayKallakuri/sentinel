@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "scanId": "89489abe-bb0e-4d1b-8426-f13e95bcf716",
+  "scanId": "2ae0d754-e9ae-4409-a352-adf9bd1921a2",
   "domain": "craigslist.org",
-  "scannedAt": "2026-09-01T22:51:22.513Z",
+  "scannedAt": "2026-09-02T01:11:43.394Z",
   "overallScore": 58.9,
   "assessedPoints": 90,
   "grade": "D",
@@ -130,7 +130,7 @@
           "id": "transport.notExpired",
           "label": "Certificate is within its validity window",
           "status": "pass",
-          "observation": "Certificate notAfter is Jan 31 23:59:59 2027 GMT, 152 days from the scan.",
+          "observation": "Certificate notAfter is Jan 31 23:59:59 2027 GMT, 151 days from the scan.",
           "pointsEarned": 5,
           "pointsAvailable": 5
         },
@@ -138,7 +138,7 @@
           "id": "transport.renewalHeadroom",
           "label": "At least 30 days before expiry",
           "status": "pass",
-          "observation": "152 days of validity remain.",
+          "observation": "151 days of validity remain.",
           "pointsEarned": 3,
           "pointsAvailable": 3
         },
@@ -196,7 +196,7 @@
           "pointsEarned": 4,
           "pointsAvailable": 4,
           "evidence": {
-            "raw": "base-uri 'self' https://hcaptcha.com https://*.hcaptcha.com; child-src https://*.craigslist.org; connect-src https://*.craigslist.org https://hcaptcha.com https://*.hcaptcha.com; font-src data:; form-action https://*.craigslist.org; frame-ancestors https://*.craigslist.org; frame-src https://*.craigslist.org https://craigslist.org https://hcaptcha.com https://*.hcaptcha.com; media-src data:; object-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' https://*.craigslist.org https://hcaptcha.com https://*.hcaptcha.com; style-src 'unsafe-inline' https://*.craigslist.org https://hcaptcha.com https://*.hcaptcha.com"
+            "raw": "base-uri 'self' https://hcaptcha.com https://*.hcaptcha.com; child-src https://*.craigslist.org; connect-src https://*.craigslist.org https://hcaptcha.com https://*.hcaptcha.com; font-src data:; form-action https://*.craigslist.org; frame-ancestors https://*.craigslist.org; frame-src https://*.craigslist.org; media-src data:; object-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' https://*.craigslist.org https://hcaptcha.com https://*.hcaptcha.com; style-src 'unsafe-inline' https://*.craigslist.org https://hcaptcha.com https://*.hcaptcha.com"
           }
         },
         {
@@ -358,25 +358,18 @@
   ],
   "screenshots": [
     {
-      "id": "57008b34-a725-4851-82db-dfee29a36bdb",
+      "id": "42629332-bf90-4702-9346-06f09b12b314",
       "url": "https://craigslist.org/",
-      "capturedAt": "2026-09-01T22:51:13.441Z",
+      "capturedAt": "2026-09-02T01:11:37.025Z",
       "source": "static",
-      "path": "/samples/craigslist.org/57008b34-a725-4851-82db-dfee29a36bdb.jpg"
+      "path": "/samples/craigslist.org/42629332-bf90-4702-9346-06f09b12b314.jpg"
     },
     {
-      "id": "718ccec2-bce6-496c-a93f-a46f8d04c671",
+      "id": "08d9ec8b-60e8-47dc-93fc-e6e52dfc11e8",
       "url": "https://craigslist.org/.well-known/security.txt",
-      "capturedAt": "2026-09-01T22:51:16.360Z",
+      "capturedAt": "2026-09-02T01:11:39.883Z",
       "source": "static",
-      "path": "/samples/craigslist.org/718ccec2-bce6-496c-a93f-a46f8d04c671.jpg"
-    },
-    {
-      "id": "e76cbf0d-e9fa-4bd3-8add-c9211cbc56f8",
-      "url": "https://www.craigslist.org/about/help/system-status",
-      "capturedAt": "2026-09-01T22:51:21.588Z",
-      "source": "static",
-      "path": "/samples/craigslist.org/e76cbf0d-e9fa-4bd3-8add-c9211cbc56f8.jpg"
+      "path": "/samples/craigslist.org/08d9ec8b-60e8-47dc-93fc-e6e52dfc11e8.jpg"
     }
   ],
   "subdomains": {
@@ -416,16 +409,16 @@
   },
   "observedSoftware": [],
   "timings": {
-    "totalMs": 12524,
+    "totalMs": 9122,
     "engines": [
       {
-        "engine": "B",
-        "elapsedMs": 9382,
+        "engine": "A",
+        "elapsedMs": 8739,
         "status": "ok"
       },
       {
-        "engine": "A",
-        "elapsedMs": 12522,
+        "engine": "B",
+        "elapsedMs": 9103,
         "status": "ok"
       }
     ]
