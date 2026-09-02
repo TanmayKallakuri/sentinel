@@ -66,23 +66,21 @@ export function ScanForm({ enabled }: { enabled: boolean }) {
     }
   }
 
+  // An instance published without live scanning says so in one quiet line where
+  // the field would have been, rather than in a box that outweighs the samples.
   if (!enabled) {
     return (
-      <section className="card">
-        <p style={{ margin: 0 }}>
-          Live scanning is switched off on this instance, so no new scan can be run here.
-        </p>
-        <p className="muted" style={{ margin: "8px 0 0" }}>
-          The bundled sample reports are stored results from real scans and read exactly like a live
-          one. <Link href="/">Open a sample report</Link>.
-        </p>
-      </section>
+      <p className="form-note">
+        Live scanning is switched off on this instance, so no new scan can be run here. The bundled
+        sample reports are stored results from real scans and read exactly like a live one.{" "}
+        <Link href="/">Open a sample report</Link>.
+      </p>
     );
   }
 
   return (
     <>
-      <form onSubmit={submit} className="card" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+      <form onSubmit={submit} className="form-row">
         <input
           className="field"
           value={domain}
@@ -98,21 +96,26 @@ export function ScanForm({ enabled }: { enabled: boolean }) {
           {state === "running" ? "Scanning" : "Run scan"}
         </button>
       </form>
+      {state === "idle" ? (
+        <p className="form-note">
+          One cloud browser session and one sandbox per scan. A scan takes about a minute.
+        </p>
+      ) : null}
       <div aria-live="polite">
         {state === "running" ? (
-          <p className="muted" style={{ marginTop: 12 }}>
+          <p className="form-note">
             Driving a cloud browser across the public trust surface and running passive checks in a
             sandbox. This takes about a minute.
           </p>
         ) : null}
         {error ? (
-          <p style={{ marginTop: 12, color: "var(--clay-deep)" }} role="alert">
+          <p className="form-error" role="alert">
             {error}
           </p>
         ) : null}
       </div>
       {report ? (
-        <div style={{ marginTop: 24 }}>
+        <div className="scan-result">
           <ReportView report={report} />
         </div>
       ) : null}

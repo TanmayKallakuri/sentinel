@@ -1,12 +1,5 @@
-import type { Grade, Report } from "@/lib/types";
-
-const GRADE_COLOUR: Record<Grade, string> = {
-  A: "var(--moss-deep)",
-  B: "var(--moss-deep)",
-  C: "var(--amber-deep)",
-  D: "var(--clay-deep)",
-  F: "var(--clay-deep)",
-};
+import type { Report } from "@/lib/types";
+import { GradeBadge } from "./GradeBadge";
 
 function scannedAt(iso: string): string {
   const parsed = new Date(iso);
@@ -14,37 +7,26 @@ function scannedAt(iso: string): string {
 }
 
 export function ScoreHeader({ report }: { report: Report }) {
-  const timings = report.timings.engines
-    .map((t) => `Engine ${t.engine} ${t.elapsedMs}ms${t.status === "error" ? " (error)" : ""}`)
-    .concat(`total ${report.timings.totalMs}ms`)
-    .join(" | ");
-
   return (
-    <header className="card" style={{ display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap" }}>
-      <div
-        style={{ fontSize: 56, fontWeight: 700, lineHeight: 1, color: GRADE_COLOUR[report.grade] }}
-        aria-label={`Grade ${report.grade}`}
-      >
-        {report.grade}
-      </div>
-      <div style={{ minWidth: 0 }}>
-        <h1 style={{ fontSize: 24, overflowWrap: "anywhere" }}>{report.domain}</h1>
-        <p style={{ margin: "4px 0 0" }}>
-          {report.overallScore} out of 100, assessed on {report.assessedPoints} of 100 points.
+    <header className="report-head">
+      <div className="report-head-main">
+        {/* The domain is set in monospace because it is quoted from the target
+            rather than written by Sentinel. */}
+        <h1 className="report-domain">{report.domain}</h1>
+        <p className="eyebrow score-eyebrow">Score out of 100</p>
+        <p className="score-line">
+          <span className="score-value">{report.overallScore}</span>
+          <span className="score-denominator">, assessed on {report.assessedPoints} of 100</span>
         </p>
         {report.assessedPoints < 100 ? (
-          <p className="muted" style={{ margin: "4px 0 0" }}>
+          <p className="muted score-note">
             The remaining {100 - report.assessedPoints} points belong to checks that could not be
             assessed. They are excluded from both sides of the score rather than counted as lost.
           </p>
         ) : null}
-        <p className="muted" style={{ margin: "4px 0 0" }}>
-          Scanned {scannedAt(report.scannedAt)}.
-        </p>
-        <p className="muted mono" style={{ margin: "4px 0 0", overflowWrap: "anywhere" }}>
-          {timings}
-        </p>
+        <p className="muted mono report-meta">Scanned {scannedAt(report.scannedAt)}</p>
       </div>
+      <GradeBadge grade={report.grade} />
     </header>
   );
 }

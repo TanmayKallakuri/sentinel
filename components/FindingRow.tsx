@@ -28,35 +28,42 @@ function isLinkable(url: string): boolean {
 export function FindingRow({ finding }: { finding: Finding }) {
   const scored = finding.pointsAvailable > 0;
   const url = finding.evidence?.url;
+  const excerpt = finding.evidence?.excerpt;
+  const raw = finding.evidence?.raw;
+  const hasEvidence = Boolean(url || excerpt || raw);
+
   return (
     <li className="finding">
       <div className="finding-head">
         <span className={`chip chip-${finding.status}`} title={STATUS_TITLE[finding.status]}>
           {STATUS_LABEL[finding.status]}
         </span>
-        <strong className="finding-label">{finding.label}</strong>
-        <span className="muted mono finding-points">
+        <span className="finding-label">{finding.label}</span>
+        <span className="mono finding-points">
           {scored ? `${finding.pointsEarned} / ${finding.pointsAvailable}` : "not scored"}
         </span>
       </div>
-      <p style={{ margin: "6px 0 0" }}>{finding.observation}</p>
-      {url ? (
-        <p className="mono muted evidence">
-          Evidence:{" "}
-          {isLinkable(url) ? (
-            <a href={url} rel="noreferrer nofollow" target="_blank">
-              {url}
-            </a>
-          ) : (
-            url
-          )}
-        </p>
-      ) : null}
-      {finding.evidence?.excerpt ? (
-        <p className="mono muted evidence">&ldquo;{finding.evidence.excerpt}&rdquo;</p>
-      ) : null}
-      {finding.evidence?.raw ? (
-        <pre className="mono muted evidence-raw">{finding.evidence.raw}</pre>
+      <p className="finding-observation">{finding.observation}</p>
+      {/* Evidence is quoted material. It is folded away by default so a page of
+          findings stays scannable, and it is still in the markup for search and
+          for print. */}
+      {hasEvidence ? (
+        <details className="evidence-box">
+          <summary>Evidence</summary>
+          {url ? (
+            <p className="mono muted evidence">
+              {isLinkable(url) ? (
+                <a href={url} rel="noreferrer nofollow" target="_blank">
+                  {url}
+                </a>
+              ) : (
+                url
+              )}
+            </p>
+          ) : null}
+          {excerpt ? <p className="mono muted evidence">&ldquo;{excerpt}&rdquo;</p> : null}
+          {raw ? <pre className="mono muted evidence-raw">{raw}</pre> : null}
+        </details>
       ) : null}
     </li>
   );

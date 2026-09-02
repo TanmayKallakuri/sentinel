@@ -6,8 +6,8 @@ import { ScreenshotGallery } from "./ScreenshotGallery";
 
 /**
  * The standing caveat every report carries. It is rendered unconditionally
- * above the score rather than added to notes, because a reader has to know the
- * boundary of the scan before reading a number derived from it.
+ * directly under the score as a band across the reading column, because a
+ * reader has to know the boundary of the scan to read the number above it.
  */
 export const SCOPE_LINE =
   "This score reflects publicly observable, self-hosted posture only. Off-site and authenticated content is not assessed.";
@@ -22,26 +22,28 @@ const LOOKUP_NOTE: Record<ObservedSoftware["cveLookup"], string> = {
 function SoftwareList({ software }: { software: ObservedSoftware[] }) {
   if (software.length === 0) {
     return (
-      <p className="muted" style={{ margin: "8px 0 0" }}>
+      <p className="muted sub-note">
         No software product or version was disclosed in the observed public responses.
       </p>
     );
   }
   return (
-    <ul style={{ listStyle: "none", margin: "8px 0 0", padding: 0 }}>
+    <ul className="findings">
       {software.map((item) => (
         <li key={`${item.product}-${item.version ?? "unversioned"}-${item.source}`} className="finding">
-          <strong>{item.product}</strong>
-          {item.version ? <span className="mono"> {item.version}</span> : null}
+          {/* Product and version are read off a response header, so both are
+              quoted in mono. */}
+          <p className="finding-label mono">
+            {item.product}
+            {item.version ? ` ${item.version}` : ""}
+          </p>
           <p className="muted mono evidence">
             Observed in {item.source}
             {item.cpe ? ` as ${item.cpe}` : ""}.
           </p>
-          <p className="muted" style={{ margin: "4px 0 0" }}>
-            {LOOKUP_NOTE[item.cveLookup]}
-          </p>
+          <p className="muted sub-note">{LOOKUP_NOTE[item.cveLookup]}</p>
           {item.cves.length > 0 ? (
-            <p className="mono evidence" style={{ margin: "4px 0 0" }}>
+            <p className="mono evidence">
               {item.cves
                 .map((cve) => `${cve.id}${cve.cvss === undefined ? "" : ` (CVSS ${cve.cvss})`}`)
                 .join(", ")}
@@ -53,19 +55,48 @@ function SoftwareList({ software }: { software: ObservedSoftware[] }) {
   );
 }
 
+// Wall clock per engine and for the scan as a whole. Every cell is measured, so
+// the whole table is monospace.
+function TimingTable({ timings }: { timings: Report["timings"] }) {
+  return (
+    <table className="timings mono">
+      <thead>
+        <tr>
+          <th scope="col">Stage</th>
+          <th scope="col">Elapsed</th>
+          <th scope="col">Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        {timings.engines.map((timing) => (
+          <tr key={timing.engine}>
+            <th scope="row">Engine {timing.engine}</th>
+            <td>{timing.elapsedMs} ms</td>
+            <td>{timing.status}</td>
+          </tr>
+        ))}
+        <tr>
+          <th scope="row">Total</th>
+          <td>{timings.totalMs} ms</td>
+          <td />
+        </tr>
+      </tbody>
+    </table>
+  );
+}
+
 export function ReportView({ report }: { report: Report }) {
   const ct = report.subdomains;
 
   return (
     <article>
-      <p className="scope-line">{SCOPE_LINE}</p>
       <ScoreHeader report={report} />
-      <hr className="rule" />
-      <p className="muted">
+      <p className="scope-band">{SCOPE_LINE}</p>
+      <p className="legend muted">
         Every finding below is an observation from public data. Scores are derived from those
         observations by a fixed rubric. Nothing here asserts that this vendor is vulnerable.
       </p>
-      <p className="muted" style={{ margin: "8px 0 0" }}>
+      <p className="legend muted">
         <span className="chip chip-unavailable" title={STATUS_TITLE.unavailable}>
           {STATUS_LABEL.unavailable}
         </span>{" "}
@@ -78,23 +109,23 @@ export function ReportView({ report }: { report: Report }) {
         are not the same fact.
       </p>
       {report.executiveSummary ? (
-        <section className="card" style={{ margin: "20px 0" }}>
-          <h2 style={{ margin: "0 0 8px", fontSize: 18 }}>Executive summary</h2>
-          <p className="muted mono" style={{ margin: "0 0 8px" }}>
+        <section className="card section">
+          <h2 className="section-head">Executive summary</h2>
+          <p className="muted mono">
             Generated narrative from {report.executiveSummary.model}. The score does not depend on
             it.
           </p>
-          <p style={{ whiteSpace: "pre-wrap" }}>{report.executiveSummary.text}</p>
+          <p className="summary-text">{report.executiveSummary.text}</p>
         </section>
       ) : null}
-      <div style={{ marginTop: 20 }}>
+      <div className="cat-grid section">
         {report.categories.map((category) => (
           <CategorySection key={category.id} category={category} />
         ))}
       </div>
       <ScreenshotGallery screenshots={report.screenshots} />
-      <section className="card" style={{ marginTop: 20 }}>
-        <h2 style={{ margin: "0 0 8px", fontSize: 18 }}>Passive attack surface</h2>
+      <section className="card section">
+        <h2 className="section-head">Passive attack surface</h2>
         <p className="muted">
           {ct.status === "unavailable"
             ? "Certificate Transparency lookup was unavailable for this scan."
@@ -103,26 +134,29 @@ export function ReportView({ report }: { report: Report }) {
         {ct.sample.length > 0 ? (
           <>
             {ct.total > ct.sample.length ? (
-              <p className="muted" style={{ margin: "8px 0 0" }}>
-                Showing {ct.sample.length} of them.
-              </p>
+              <p className="muted sub-note">Showing {ct.sample.length} of them.</p>
             ) : null}
+            {/* Names read out of a public log, so they are quoted in mono. */}
             <p className="mono muted evidence">{ct.sample.join(", ")}</p>
           </>
         ) : null}
-        <h3 style={{ margin: "16px 0 0", fontSize: 16 }}>Software observed</h3>
+        <h3 className="section-head sub-head">Software observed</h3>
         <SoftwareList software={report.observedSoftware} />
       </section>
       {report.notes.length > 0 ? (
-        <section className="card" style={{ marginTop: 20 }}>
-          <h2 style={{ margin: "0 0 8px", fontSize: 18 }}>Scan notes</h2>
-          <ul className="muted" style={{ margin: 0, paddingLeft: 18 }}>
+        <section className="card section">
+          <h2 className="section-head">Scan notes</h2>
+          <ul className="muted note-list">
             {report.notes.map((note) => (
               <li key={note}>{note}</li>
             ))}
           </ul>
         </section>
       ) : null}
+      <section className="card section">
+        <h2 className="section-head">Scan timings</h2>
+        <TimingTable timings={report.timings} />
+      </section>
     </article>
   );
 }

@@ -18,16 +18,20 @@ export default function ScanPage() {
 
   return (
     <main className="wrap">
-      <p className="mono">
+      <p className="crumb mono">
         <Link href="/">Sentinel</Link>
       </p>
-      <h1 style={{ margin: "8px 0 0", fontSize: 28 }}>Run a scan</h1>
-      <p className="muted" style={{ margin: "8px 0 20px" }}>
+      <h1 className="page-title">Run a scan</h1>
+      <p className="lede muted">
         Sentinel reads only public pages, public DNS, a standard TLS handshake, and public
         Certificate Transparency logs. It never authenticates and never sends anything but GET
         requests. Live scans are rate limited per visitor and in total.
       </p>
-      <ScanForm enabled={enabled} />
+      {/* The scan report renders its own scope band, so the page does not
+          repeat it above the field. */}
+      <div className="section">
+        <ScanForm enabled={enabled} />
+      </div>
     </main>
   );
 }

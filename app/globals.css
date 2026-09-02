@@ -1,24 +1,38 @@
 :root {
+  /* Warm paper and near black ink. A posture report should read like a printed
+     assessment, not like a dashboard. */
   --paper: #faf7f2;
+  --band: #f2ece2;
+  --surface: #ffffff;
   --ink: #23201c;
   --muted: #6b635a;
   --rule: #ded6ca;
-  --moss: #4a6b52;
-  --amber: #b5761f;
-  --clay: #9a4b3f;
-  --surface: #ffffff;
-  --radius: 6px;
-
-  /* Deeper variants exist because the accent hues do not reach 4.5:1 as small
-     text on their own tinted backgrounds. */
-  --moss-deep: #3a5641;
-  --amber-deep: #7d5010;
-  --clay-deep: #823e33;
-
-  --tint-moss: #e7efe8;
-  --tint-amber: #f6ecd9;
-  --tint-clay: #f4e3e0;
+  --rule-soft: #ebe4d9;
   --tint-neutral: #ece9e3;
+
+  /* One accent, deep green. It carries the primary action, links and progress
+     and nothing else, so an accent always means the same thing. */
+  --accent: #3a5641;
+  --accent-tint: #e7efe8;
+
+  /* The grade scale runs green to red and never enters blue, so a grade cannot
+     be mistaken for a link or for neutral chrome. Each colour is paired with a
+     tint that still carries its own text at 4.5:1. */
+  --grade-a: #3a5641;
+  --grade-a-tint: #e7efe8;
+  --grade-b: #55631f;
+  --grade-b-tint: #edf0da;
+  --grade-c: #7d5010;
+  --grade-c-tint: #f6ecd9;
+  --grade-d: #a04520;
+  --grade-d-tint: #f8e5d9;
+  --grade-f: #932320;
+  --grade-f-tint: #f7e0dd;
+
+  --radius: 6px;
+  /* The scope band bleeds to the edge of the reading column by cancelling this
+     gutter, so the two stay in step. */
+  --gutter: 24px;
 }
 
 html {
@@ -39,8 +53,8 @@ body {
   color: var(--ink);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial,
     sans-serif;
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: 15px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -50,112 +64,273 @@ h3,
 p,
 ul,
 ol,
-figure {
+figure,
+table {
   margin: 0;
 }
 
 a {
-  color: var(--moss-deep);
+  color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
 }
 
 a:hover {
-  color: var(--amber-deep);
+  color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--amber-deep);
+  outline: 2px solid var(--grade-c);
   outline-offset: 2px;
 }
 
 ::selection {
-  background: var(--tint-amber);
+  background: var(--grade-c-tint);
   color: var(--ink);
 }
 
 input,
 button {
-  accent-color: var(--moss);
+  accent-color: var(--accent);
 }
 
 .wrap {
-  max-width: 900px;
+  max-width: 980px;
   margin: 0 auto;
-  padding: 40px 20px 80px;
-}
-
-.rule {
-  border: 0;
-  border-top: 1px solid var(--rule);
-  margin: 32px 0;
+  padding: 36px var(--gutter) 96px;
 }
 
 .card {
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: var(--radius);
-  padding: 20px;
+  padding: 16px 18px;
 }
 
+/* Monospace marks a value quoted from the target rather than written by
+   Sentinel: hostnames, header strings, URLs, excerpts and timings. */
 .mono {
   font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 13px;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
 }
 
 .muted {
   color: var(--muted);
 }
 
-.chip {
-  display: inline-block;
-  padding: 2px 8px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  font-size: 12px;
+/* Section labels stay small and quiet so the values under them carry the page. */
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 10.5px;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lede {
+  max-width: 62ch;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.crumb {
+  margin: 0 0 20px;
+}
+
+.section {
+  margin-top: 20px;
+}
+
+/* Section labels sit above a hairline so a card reads as a titled block without
+   spending a heading sized line on the title. */
+.section-head {
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule-soft);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sub-head {
+  margin-top: 20px;
+}
+
+/* Report header */
+
+.report-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px 24px;
+  align-items: start;
+}
+
+.report-domain {
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.score-eyebrow {
+  margin: 14px 0 2px;
+}
+
+.score-line {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.score-value {
+  font-size: 34px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.score-denominator {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.score-note {
+  margin: 8px 0 0;
+  max-width: 60ch;
+  font-size: 13px;
+}
+
+.report-meta {
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.grade {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 10px;
+  color: var(--paper);
+  font-size: 46px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.grade-sm {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  font-size: 22px;
+}
+
+.grade-a {
+  background: var(--grade-a);
+}
+
+.grade-b {
+  background: var(--grade-b);
+}
+
+.grade-c {
+  background: var(--grade-c);
+}
+
+.grade-d {
+  background: var(--grade-d);
+}
+
+.grade-f {
+  background: var(--grade-f);
+}
+
+/* Only reached if a stored report carries a letter outside the scale. */
+.grade-neutral {
+  background: var(--muted);
+}
+
+/* The standing scope caveat. A band rather than a card, because it is a
+   condition on everything below it and not one more item in the report. */
+.scope-band {
+  margin: 20px calc(var(--gutter) * -1) 24px;
+  padding: 10px var(--gutter);
+  background: var(--band);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.legend {
+  margin: 0 0 16px;
+  max-width: 76ch;
+  font-size: 13px;
+}
+
+.summary-text {
+  margin-top: 10px;
+  max-width: 72ch;
+  white-space: pre-wrap;
+}
+
+.note-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+.note-list li + li {
+  margin-top: 4px;
+}
+
+/* Categories */
+
+/* Cards flow down one column and then across, so a short category does not
+   leave a hole beside a long one. */
+.cat-grid {
+  column-count: 2;
+  column-gap: 16px;
+}
+
+.cat-grid > section {
+  break-inside: avoid;
+  margin-bottom: 16px;
+}
+
+.cat-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.cat-name {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.cat-points {
   white-space: nowrap;
-}
-
-.chip-pass {
-  background: var(--tint-moss);
-  color: var(--moss-deep);
-}
-
-.chip-warn {
-  background: var(--tint-amber);
-  color: var(--amber-deep);
-}
-
-.chip-fail {
-  background: var(--tint-clay);
-  color: var(--clay-deep);
-}
-
-.chip-info {
-  background: var(--tint-neutral);
   color: var(--muted);
-}
-
-/* A check Sentinel could not run: flat and neutral, nothing was learned. */
-.chip-unavailable {
-  background: var(--tint-neutral);
-  color: var(--muted);
-  border-color: var(--rule);
-}
-
-/* A check that ran and then declined to read what it reached: outlined rather
-   than filled, so a reader can see at a glance that it is not the same fact. */
-.chip-unverified {
-  background: transparent;
-  color: var(--amber-deep);
-  border: 1px dashed var(--amber-deep);
 }
 
 .bar {
-  height: 6px;
-  background: var(--rule);
+  height: 4px;
+  margin: 10px 0 6px;
+  background: var(--tint-neutral);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -163,33 +338,149 @@ button {
 .bar > span {
   display: block;
   height: 100%;
-  background: var(--moss);
+  background: var(--accent);
+}
+
+.sub-note {
+  margin: 6px 0 0;
+  font-size: 13px;
+}
+
+/* Findings */
+
+.findings {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
 }
 
 .finding {
-  padding: 12px 0;
-  border-top: 1px solid var(--rule);
+  padding: 10px 0;
+  border-top: 1px solid var(--rule-soft);
 }
 
+.finding:first-child {
+  border-top-color: var(--rule);
+}
+
+/* Status, label and points hold their own columns, so a long label wraps under
+   itself instead of pushing the points onto a line of their own. */
 .finding-head {
-  display: flex;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
   align-items: baseline;
-  flex-wrap: wrap;
 }
 
 .finding-label {
   min-width: 0;
+  font-weight: 600;
   overflow-wrap: anywhere;
 }
 
 .finding-points {
-  margin-left: auto;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.finding-observation {
+  margin: 4px 0 0;
+  font-size: 14px;
+}
+
+.chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
+.chip-pass {
+  background: var(--accent-tint);
+  color: var(--accent);
+}
+
+.chip-warn {
+  background: var(--grade-c-tint);
+  color: var(--grade-c);
+}
+
+.chip-fail {
+  background: var(--grade-f-tint);
+  color: var(--grade-f);
+}
+
+.chip-info {
+  background: var(--tint-neutral);
+  color: var(--muted);
+}
+
+/* A check Sentinel could not run. Squared off, filled and grey: an inert block
+   where a result would have been. */
+.chip-unavailable {
+  background: var(--tint-neutral);
+  border-color: var(--rule);
+  border-radius: 3px;
+  color: var(--muted);
+}
+
+/* A check that ran and then declined to read what it reached. Still a pill, but
+   hollow and dashed in amber, so it never reads as the same fact as the grey
+   block above. */
+.chip-unverified {
+  background: transparent;
+  border: 1px dashed var(--grade-c);
+  color: var(--grade-c);
+}
+
+/* Evidence */
+
+.evidence-box {
+  margin: 6px 0 0;
+}
+
+.evidence-box > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.evidence-box > summary::-webkit-details-marker {
+  display: none;
+}
+
+.evidence-box > summary::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 5px solid currentColor;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transition: transform 120ms ease;
+}
+
+.evidence-box[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.evidence-box > summary:hover {
+  color: var(--ink);
+}
+
 .evidence {
-  margin: 4px 0 0;
+  margin: 6px 0 0;
   overflow-wrap: anywhere;
 }
 
@@ -206,20 +497,84 @@ button {
   overflow-wrap: anywhere;
 }
 
+/* Screenshots */
+
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 16px;
 }
 
-.gallery img {
-  width: 100%;
-  display: block;
+.shot-frame {
+  height: 260px;
+  overflow: auto;
   border: 1px solid var(--rule);
   border-radius: var(--radius);
   background: var(--tint-neutral);
 }
 
+.gallery img {
+  width: 100%;
+  display: block;
+}
+
+.gallery figcaption {
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+}
+
+/* Timings */
+
+.timings {
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.timings th {
+  padding: 0 20px 4px 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+.timings td,
+.timings tbody th {
+  padding: 5px 20px 5px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  white-space: nowrap;
+}
+
+.timings tbody th {
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.timings tbody tr:last-child td,
+.timings tbody tr:last-child th {
+  border-bottom: 0;
+  font-weight: 600;
+}
+
+/* Scan form */
+
+/* A domain is short. The field is sized for one rather than stretched across
+   the reading column. */
+.form-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-width: 560px;
+}
+
+/* A hostname is typed here, so the field carries the same monospace as every
+   other value quoted from a target. */
 .field {
   flex: 1;
   min-width: 0;
@@ -228,31 +583,168 @@ button {
   border-radius: var(--radius);
   background: var(--surface);
   color: var(--ink);
-  font: inherit;
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+}
+
+.field::placeholder {
+  color: var(--muted);
+}
+
+.field:focus-visible {
+  border-color: var(--accent);
 }
 
 .submit {
-  padding: 10px 18px;
-  border: 1px solid var(--moss-deep);
+  padding: 10px 20px;
+  border: 1px solid var(--accent);
   border-radius: var(--radius);
-  background: var(--moss);
+  background: var(--accent);
   color: var(--paper);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.submit:hover:not(:disabled) {
+  background: var(--ink);
+  border-color: var(--ink);
 }
 
 .submit:disabled {
-  background: var(--rule);
+  background: var(--tint-neutral);
   border-color: var(--rule);
   color: var(--muted);
   cursor: not-allowed;
 }
 
-.scope-line {
-  margin: 0 0 12px;
-  padding-left: 12px;
-  border-left: 3px solid var(--rule);
+/* What this instance can do is a quiet line under the field, not a box that
+   competes with the report below it. */
+.form-note {
+  margin: 10px 0 0;
+  max-width: 72ch;
+  font-size: 13px;
   color: var(--muted);
+}
+
+.form-error {
+  margin: 12px 0 0;
+  color: var(--grade-f);
   font-size: 14px;
+}
+
+.scan-result {
+  margin-top: 28px;
+}
+
+/* Home and page headings */
+
+.masthead {
+  margin-bottom: 10px;
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.action {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.action:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+/* Home */
+
+.sample-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.sample-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 120ms ease, transform 120ms ease;
+}
+
+.sample-card:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.sample-domain {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.sample-score {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+}
+
+@media (max-width: 620px) {
+  :root {
+    --gutter: 16px;
+  }
+
+  .wrap {
+    padding-top: 28px;
+  }
+
+  /* The badge stays beside the domain rather than dropping below it, so the
+     grade is never separated from the name it belongs to. */
+  .report-head {
+    gap: 12px 14px;
+  }
+
+  .grade {
+    width: 64px;
+    height: 64px;
+    font-size: 34px;
+    border-radius: 8px;
+  }
+
+  .score-value {
+    font-size: 30px;
+  }
+
+  .cat-grid {
+    column-count: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0ms !important;
+  }
 }

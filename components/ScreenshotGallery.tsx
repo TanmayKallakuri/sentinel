@@ -17,16 +17,20 @@ export function ScreenshotGallery({ screenshots }: { screenshots: Screenshot[] }
   if (shown.length === 0) return null;
 
   return (
-    <section className="card">
-      <h2 style={{ margin: "0 0 12px", fontSize: 18 }}>Trust surface evidence</h2>
+    <section className="card section">
+      <h2 className="section-head">Trust surface evidence</h2>
       <div className="gallery">
         {shown.map(({ shot, source }) => (
           <figure key={shot.id}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={source} alt={`Screenshot of ${shot.url}`} loading="lazy" />
-            <figcaption className="mono muted" style={{ marginTop: 6, overflowWrap: "anywhere" }}>
-              {shot.url}
-            </figcaption>
+            {/* A full page capture can run to several thousand pixels. It is
+                kept whole and scrolled inside its frame rather than cropped out
+                of the report. */}
+            <div className="shot-frame">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={source} alt={`Screenshot of ${shot.url}`} loading="lazy" />
+            </div>
+            {/* The capture URL is quoted from the target, so it stays in mono. */}
+            <figcaption className="mono muted">{shot.url}</figcaption>
           </figure>
         ))}
       </div>

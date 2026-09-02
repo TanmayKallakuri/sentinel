@@ -8,12 +8,16 @@ import type { Report } from "@/lib/types";
 const html = renderToStaticMarkup(createElement(ReportView, { report }));
 
 describe("ReportView", () => {
-  it("carries the fixed scope line once, above the score, on every report", () => {
+  it("carries the fixed scope line once, with the score, on every report", () => {
     expect(SCOPE_LINE).toBe(
       "This score reflects publicly observable, self-hosted posture only. Off-site and authenticated content is not assessed.",
     );
     expect(html.split(SCOPE_LINE)).toHaveLength(2);
-    expect(html.indexOf(SCOPE_LINE)).toBeLessThan(html.indexOf("71.1 out of 100"));
+    // The band sits between the score it qualifies and the first finding, so a
+    // reader meets the boundary of the scan before reading anything derived
+    // from it.
+    expect(html.indexOf(SCOPE_LINE)).toBeGreaterThan(html.indexOf("71.1"));
+    expect(html.indexOf(SCOPE_LINE)).toBeLessThan(html.indexOf("Governance and compliance"));
 
     // A report stripped of every optional part still carries it.
     const bare: Report = {
@@ -27,7 +31,11 @@ describe("ReportView", () => {
   });
 
   it("states the score, the grade, and the assessed denominator", () => {
-    expect(html).toContain("71.1 out of 100, assessed on 90 of 100 points.");
+    // The score and its denominator are separate elements in the header, so the
+    // assertion reads the rendered text rather than the markup around it.
+    const text = html.replace(/<[^>]+>/g, "");
+    expect(text).toContain("Score out of 100");
+    expect(text).toContain("71.1, assessed on 90 of 100");
     expect(html).toContain(">C</div>");
     expect(html).toContain("The remaining 10 points belong to checks that could not be assessed");
   });
@@ -90,7 +98,15 @@ describe("ReportView", () => {
   });
 
   it("shows engine timings including a failed engine", () => {
-    expect(html).toContain("Engine A 48210ms | Engine B 31004ms (error) | total 51234ms");
+    // Timings are a table now, so each cell is checked inside it rather than as
+    // one joined line.
+    const timings = html.slice(html.indexOf('<table class="timings'));
+    expect(timings).toContain("Engine A");
+    expect(timings).toContain("48210 ms");
+    expect(timings).toContain("Engine B");
+    expect(timings).toContain("31004 ms");
+    expect(timings).toContain("error");
+    expect(timings).toContain("51234 ms");
   });
 
   it("carries no key material into the rendered markup", () => {

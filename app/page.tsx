@@ -1,44 +1,60 @@
 import Link from "next/link";
+import { GradeBadge } from "@/components/GradeBadge";
+import { SCOPE_LINE } from "@/components/ReportView";
 import { listSampleSummaries } from "@/lib/samples";
 
+const GRADE_ORDER = ["A", "B", "C", "D", "F"];
+
+// Best first, so the sample cards show the grade scale in order rather than in
+// alphabetical order of domain. A letter outside the scale sorts last.
+function gradeRank(grade: string): number {
+  const index = GRADE_ORDER.indexOf(grade);
+  return index === -1 ? GRADE_ORDER.length : index;
+}
+
 export default async function Home() {
-  const samples = await listSampleSummaries();
+  const samples = (await listSampleSummaries()).sort(
+    (left, right) => gradeRank(left.grade) - gradeRank(right.grade),
+  );
   return (
     <main className="wrap">
-      <h1 style={{ fontSize: 32 }}>Sentinel</h1>
-      <p className="muted" style={{ margin: "8px 0 0" }}>
-        A passive vendor security posture review. Sentinel reads only public data: pages a visitor
-        can already load, a standard TLS handshake, public DNS records, and public Certificate
-        Transparency logs. It never logs in, never probes, and never sends anything a normal reader
-        would not.
+      <h1 className="masthead">Sentinel</h1>
+      <p className="lede">
+        Sentinel reviews the public security posture of a vendor using only what anyone can already
+        see: the pages a visitor can load, a standard TLS handshake, public DNS records, and public
+        Certificate Transparency logs.
       </p>
-      <p className="muted" style={{ margin: "8px 0 0" }}>
-        Findings are observations. The score is derived from them by a fixed rubric, and checks that
-        could not be assessed are excluded from it rather than counted as failures.
-      </p>
-      <hr className="rule" />
-      <section className="card" style={{ marginBottom: 20 }}>
-        <h2 style={{ fontSize: 18, marginTop: 0 }}>Sample reports</h2>
-        <p className="muted" style={{ margin: "8px 0 12px" }}>
+      <p className="scope-band">{SCOPE_LINE}</p>
+      <section>
+        <h2 className="eyebrow">Run a scan</h2>
+        <p>
+          <Link className="action" href="/scan">
+            Scan a domain
+          </Link>
+        </p>
+        <p className="form-note">
+          Sentinel never logs in, never probes, and never sends anything a normal reader would not.
+          One cloud browser session and one sandbox per scan.
+        </p>
+      </section>
+      <section className="section">
+        <h2 className="eyebrow">Sample reports</h2>
+        <div className="sample-grid">
+          {samples.map((sample) => (
+            <Link key={sample.slug} className="sample-card" href={`/samples/${sample.slug}`}>
+              <GradeBadge grade={sample.grade} small />
+              <span>
+                <span className="sample-domain mono">{sample.slug}</span>
+                <span className="sample-score mono">
+                  {sample.score}, assessed on {sample.assessedPoints} of 100
+                </span>
+              </span>
+            </Link>
+          ))}
+        </div>
+        <p className="form-note">
           Stored reports from real scans. Opening one runs nothing and spends no credits.
         </p>
-        <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-          {samples.map((sample) => (
-            <li key={sample.slug} style={{ padding: "8px 0", borderTop: "1px solid var(--rule)" }}>
-              <Link href={`/samples/${sample.slug}`}>{sample.slug}</Link>
-              <span className="muted mono" style={{ marginLeft: 12 }}>
-                grade {sample.grade}, {sample.score} of 100, assessed on {sample.assessedPoints}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section className="card">
-        <h2 style={{ fontSize: 18, marginTop: 0 }}>Run a live scan</h2>
-        <p className="muted" style={{ margin: "8px 0 12px" }}>
-          One cloud browser session and one sandbox per scan. A scan takes about a minute.
-        </p>
-        <Link href="/scan">Open the scan page</Link>
       </section>
     </main>
   );

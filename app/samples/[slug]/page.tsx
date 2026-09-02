@@ -14,9 +14,9 @@ export default async function SamplePage({ params }: { params: Promise<{ slug: s
 
   return (
     <main className="wrap">
-      <p className="muted mono">
-        <Link href="/">Sentinel</Link> / precomputed sample. This page is a stored report from a real
-        scan. Opening it runs nothing and spends no Solari credits.
+      <p className="muted mono crumb">
+        <Link href="/">Sentinel</Link> / precomputed sample. This page is a stored report from a
+        real scan. Opening it runs nothing and spends no Solari credits.
       </p>
       <ReportView report={report} />
     </main>

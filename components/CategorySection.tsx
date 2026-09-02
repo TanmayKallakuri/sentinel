@@ -9,26 +9,24 @@ export function CategorySection({ category }: { category: CategoryScore }) {
   const filled = Math.max(0, Math.min(100, ratio));
 
   return (
-    <section className="card" style={{ marginBottom: 20 }}>
-      <header style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
-        <h2 style={{ fontSize: 18 }}>{category.label}</h2>
-        <span className="muted mono" style={{ marginLeft: "auto", whiteSpace: "nowrap" }}>
+    <section className="card">
+      <header className="cat-head">
+        <h2 className="cat-name">{category.label}</h2>
+        <span className="mono cat-points">
           {category.pointsEarned} / {category.pointsAvailable} points
         </span>
       </header>
-      <div className="bar" style={{ margin: "10px 0 4px" }}>
+      <div className="bar">
         <span style={{ width: `${filled}%` }} />
       </div>
-      <p className="muted mono" style={{ marginTop: 4 }}>
-        Category weight {category.weight} of 100.
-      </p>
+      <p className="muted mono">Category weight {category.weight} of 100</p>
       {category.pointsNotAssessed > 0 ? (
-        <p className="muted" style={{ margin: "8px 0 0" }}>
+        <p className="muted sub-note">
           {category.pointsNotAssessed} of the {category.weight} points in this category were not
           assessed. They are excluded from both sides of the score.
         </p>
       ) : null}
-      <ul style={{ listStyle: "none", margin: "12px 0 0", padding: 0 }}>
+      <ul className="findings">
         {category.findings.map((finding) => (
           <FindingRow key={finding.id} finding={finding} />
         ))}
