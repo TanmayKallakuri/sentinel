@@ -5,9 +5,9 @@ import { useState } from "react";
 import type { Report } from "@/lib/types";
 import { ReportView } from "./ReportView";
 
-// Above the route's own 300 second budget, so a stalled connection ends in a
+// Above the route's own 60 second budget, so a stalled connection ends in a
 // message rather than a button that never comes back.
-const CLIENT_TIMEOUT_MS = 305_000;
+const CLIENT_TIMEOUT_MS = 70_000;
 
 function messageFor(status: number, body: string, retryAfter: string | null): string {
   try {

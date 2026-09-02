@@ -1,7 +1,14 @@
 import Link from "next/link";
 import { GradeBadge } from "@/components/GradeBadge";
+import { ScanForm } from "@/components/ScanForm";
 import { SCOPE_LINE } from "@/components/ReportView";
+import { liveScansEnabled } from "@/lib/live-scans";
 import { listSampleSummaries } from "@/lib/samples";
+
+// The page carries the scan field, so the flag has to be read per request.
+// Prerendering would freeze it at build time and an instance deployed with
+// scanning switched off would still offer a working form.
+export const dynamic = "force-dynamic";
 
 const GRADE_ORDER = ["A", "B", "C", "D", "F"];
 
@@ -27,11 +34,7 @@ export default async function Home() {
       <p className="scope-band">{SCOPE_LINE}</p>
       <section>
         <h2 className="eyebrow">Run a scan</h2>
-        <p>
-          <Link className="action" href="/scan">
-            Scan a domain
-          </Link>
-        </p>
+        <ScanForm enabled={liveScansEnabled()} />
         <p className="form-note">
           Sentinel never logs in, never probes, and never sends anything a normal reader would not.
           One cloud browser session and one sandbox per scan.
