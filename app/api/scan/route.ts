@@ -9,7 +9,10 @@ import { runScan } from "@/lib/orchestrator";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
-export const maxDuration = 300;
+// Measured full scans land at 9 to 28 seconds, so 60 leaves better than double
+// headroom while still failing fast if a target hangs rather than holding a
+// function open for five minutes.
+export const maxDuration = 60;
 
 const MAX_BODY_BYTES = 4096;
 // Token shapes that must never travel back to a caller, whatever an SDK error says.
